@@ -58,7 +58,9 @@
     "webpack": "^3.8.1",
     "webpack-bundle-analyzer": "^2.9.1"
   },
-  "dependencies": {},
+  "dependencies": {
+    "ohu-detect": "^0.1.0"
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
