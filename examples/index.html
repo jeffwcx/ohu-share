@@ -7,5 +7,22 @@
   <title>Share to All kinds of App</title>
 </head>
 <body>
+  <button id="share">share</button>
+  <script src="../dist/ohu-share.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var share = new ohu.Share()
+      document.querySelector('#share').onclick = function () {
+        if (typeof (ucweb) !== 'undefined') {
+          ucweb.startRequest('shell.page_share', 
+            ['title',
+              'summary',
+              location.href,
+              'QQ', '',
+              '@appname', ''])
+        }
+      }
+    })
+  </script>
 </body>
 </html>

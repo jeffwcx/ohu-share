@@ -12,9 +12,8 @@ var config = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js',
-    library: 'OhuShare',
-    libraryTarget: 'umd',
-    libraryExport: 'default'
+    library: 'ohu',
+    libraryTarget: 'umd'
   },
   module: {
     rules: [
