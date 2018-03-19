@@ -1,18 +1,24 @@
 const Browsers = {
-  QQBROWSER: 0,
-  UC: 1,
-  BAIDUBROWSER: 2,
-  QQ: 3,
-  WECHAT: 4
+  QQBROWSER: 'qqbrowser',
+  UC: 'uc',
+  BAIDUBROWSER: 'baidubrowser',
+  QQ: 'qq',
+  WECHAT: 'wechat',
+  LIEBAO: 'liebao',
+  SOGOU: 'sogou'
 }
 
 const Apps = {
-  WECHAT: 0,
-  MOMENTS: 1,
-  QQ: 2,
-  QZONE: 3,
-  WEIBO: 4,
-  ALIPAY: 5
+  WECHAT: 'wechat',
+  MOMENTS: 'moments',
+  QQ: 'qq',
+  QZONE: 'qzone',
+  WEIBO: 'weibo'
 }
 
-export { Browsers, Apps }
+const OS = {
+  ANDROID: 'android',
+  IOS: 'ios'
+}
+
+export { Browsers, Apps, OS }

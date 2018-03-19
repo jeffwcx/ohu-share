@@ -1,21 +1,25 @@
 import { Browsers, Apps } from './constants'
-const defaultShareInfo = {
+const defaultShareData = {
   title: document.title,
-  summary: '',
+  desc: '',
   img: '',
   link: window.location.href,
   appName: document.title
 }
 
 const defaultConfig = {
-  from: [],
-  to: []
+  from: [Object.values(Browsers)],
+  to: [Object.values(Apps)]
 }
 
 export default class Context {
-  constructor (shareInfo, config, browserInfo) {
-    this.shareInfo = Object.assign(shareInfo || {}, defaultShareInfo)
+  constructor (shareData, config, browserInfo) {
+    this.shareData = Object.assign(shareData || {}, defaultShareData)
     this.config = Object.assign(defaultConfig || {}, defaultConfig)
-    this.browserInfo = browserInfo
+    Object.assign(this, {
+      browserName: browserInfo.browser.name,
+      browserVersion: browserInfo.browser.version,
+      osName: browserInfo.os.name
+    })
   }
 }

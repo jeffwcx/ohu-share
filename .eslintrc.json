@@ -1,0 +1,21 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+      "standard",
+      "plugin:promise/recommended"
+  ],
+  "plugins": [
+      "import",
+      "promise",
+      "html"
+  ],
+  "env": {
+      "browser": true,
+      "es6": true,
+      "node": true
+  },
+  "globals": {
+    "ucweb": true,
+    "ucbrowser": true
+  }
+}
