@@ -1,10 +1,10 @@
 import { Apps, OS } from '../constants'
 import { openBySchema } from '../utils'
-export default class UC {
+import Native from './native'
+export default class UC extends Native {
   constructor (context) {
-    this.context = context
+    super(context)
   }
-
   static appMap = {
     [Apps.WECHAT]: {
       [OS.IOS]: 'kWeixin',
@@ -25,12 +25,11 @@ export default class UC {
     [Apps.WEIBO]: {
       [OS.IOS]: 'kSinaWeibo',
       [OS.ANDROID]: 'SinaWeibo'
-    },
-    'default': ''
+    }
   }
 
   share (appName) {
-    const shareData = this.context.shareInfo
+    const shareData = this.context.shareData
     if (appName === Apps.QZONE) {
       openBySchema('mqqapi://share/to_qzone', {
         'src_type': 'web',
@@ -59,6 +58,8 @@ export default class UC {
       ucweb.startRequest('shell.page_share', dataUCNeed)
     } else if (typeof (ucbrowser) !== 'undefined') {
       ucbrowser.web_share(...dataUCNeed)
+    } else {
+      throw new Error('Not support!')
     }
   }
 }

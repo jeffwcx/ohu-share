@@ -1,6 +1,6 @@
 import { OS } from './constants'
 
-export function concatURL (baseUrl, queryStrData, encode: false) {
+export function concatURL (baseUrl, queryStrData, encode = false) {
   const queryStr = Object.keys(queryStrData).map(i => {
     const v = encode
       ? encodeURIComponent(queryStrData[i])
@@ -30,4 +30,8 @@ export function loadJS (src, callback) {
   el.src = src
   document.body.appendChild(el)
   el.onload = callback || function () {}
+}
+
+export function isMobile (osName) {
+  return osName === OS.IOS || osName === OS.ANDROID
 }

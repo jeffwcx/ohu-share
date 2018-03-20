@@ -1,12 +1,13 @@
-import { concatURL } from '../utils'
-
-export default class Weibo {
+import { concatURL, isMobile } from '../utils'
+import URL from './url'
+export default class Weibo extends URL {
   constructor (context) {
-    this.context = context
-    this.shareData = this.context.shareData
+    super(context)
   }
-  getURL () {
-    this.url = concatURL('http://service.weibo.com/share/mobile.php', {
+  createURL () {
+    const baseUrl = `http://service.weibo.com/share/` +
+      `${isMobile(this.context.osName) ? 'mobile' : 'share'}.php`
+    return concatURL(baseUrl, {
       title: this.shareData.title,
       url: this.shareData.link,
       pic: this.shareData.icon,
@@ -16,6 +17,6 @@ export default class Weibo {
     })
   }
   share () {
-    window.open(this.url, '_blank')
+    super.share()
   }
 }

@@ -16,6 +16,10 @@
   },
   "globals": {
     "ucweb": true,
-    "ucbrowser": true
+    "ucbrowser": true,
+    "browser": true
+  },
+  "rules": {
+    "no-useless-constructor": "off"   
   }
 }

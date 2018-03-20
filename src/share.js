@@ -1,8 +1,8 @@
 
-import Detector from 'ohu-detect/src/full'
+import Detector from 'ohu-detect'
 import Context from './context'
-import urlCalls from './url/index'
-import nativeCalls from './native'
+import urlList from './url'
+import nativeList from './native'
 /**
  * import { Share, Browsers, Apps } from 'ohu-share'
  *
@@ -12,9 +12,6 @@ import nativeCalls from './native'
  *   icon: 'icon',
  *   link: 'link',
  *   from: 'from'
- * }, {
- *   from: [Browsers.QQBROWSER, Browser.UC, Browser.QQ, Browsers.WECHAT, Browsers.BAIDUBROWSER]
- *   to: [Apps.WECHAT, Apps.MOMENTS, Apps.QQ, Apps.QZONE, Apps.WEIBO, Apps.ALIPAY]
  * })
  *
  * share.to(App.WECHAT)
@@ -30,39 +27,36 @@ import nativeCalls from './native'
  */
 
 export default class Share {
-  constructor (shareInfo, config) {
+  constructor (shareData) {
     const browserInfo = new Detector(navigator.userAgent)
-    this.context = new Context(shareInfo, config, browserInfo)
+    this.context = new Context(shareData, browserInfo)
+    this._getShareBrowser()
   }
   _getShareBrowser () {
-    const browserInfo = this.context.browserInfo.browser
-    if (browserInfo.name !== undefined) { // support native
-      this.browserName = browserInfo.name
-      this.supportNative = true
-      const BrowserShareClass = nativeCalls[this.browserName]
+    if (this.context.browserName !== undefined) {
+      const BrowserShareClass = nativeList[this.context.browserName]
       if (BrowserShareClass) {
-        this.instance = new BrowserShareClass()
-      } else {
-        throw new Error('Do not support this browser')
+        this.supportNative = true
+        this.instance = new BrowserShareClass(this.context)
+        return
       }
-    } else {
-      this.supportNative = false
     }
+    this.supportNative = false
   }
 
-  to (appName) {
+  to (appName, notSupportCall) {
     if (!this.supportNative) {
-      const UrlShareClass = urlCalls[appName]
+      const UrlShareClass = urlList[appName]
       if (UrlShareClass) {
-        this.instance = new UrlShareClass()
+        this.instance = new UrlShareClass(this.context)
       } else {
-        throw new Error('Do not support to share to this app')
+        notSupportCall(this.context)
       }
     }
-    this.instance.share(appName)
-  }
-
-  mount () {
-
+    try {
+      this.instance.share(appName)
+    } catch (error) {
+      notSupportCall(this.context)
+    }
   }
 }
