@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Share to All kinds of App</title>
+  <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
 </head>
 <body>
   <button id="shareToQQ">ShareToQQ</button>
   <button id="shareToWeibo">ShareToWeibo</button>
   <button id="shareToQZone">ShareToQZone</button>
-  <button id="shareToWeixin">shareToWeixin</button>
+  <button id="shareToWeixin">shareToWechat</button>
+  <button id="shareToMoments">shareToMoments</button>
   <script src="../dist/ohu-share.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -21,22 +24,32 @@
         link: 'https://github.com/jeffwcx',
         from: 'github'
       })
+      console.log(share.context)
       var Apps = ohu.Apps
       document.getElementById('shareToWeibo').addEventListener('click', function() {
-        share.to(Apps.WEIBO)
+        share.to(Apps.WEIBO, function () {
+          console.log('Nothing support WEIBO')
+        })
       }, false)
       document.getElementById('shareToQQ').addEventListener('click', function() {
-        share.to(Apps.QQ)
+        share.to(Apps.QQ, function() {
+          console.log('Nothing support QQ')
+        })
       }, false)
       document.getElementById('shareToQZone').addEventListener('click', function() {
-        share.to(Apps.QZONE)
+        share.to(Apps.QZONE, function() {
+          console.log('Nothing support Qzone')
+        })
       }, false)
       document.getElementById('shareToWeixin').addEventListener('click', function() {
-        try {
-          share.to(Apps.WECHAT)
-        } catch (error) {
-          console.log('处理不支持微信分享的浏览器')
-        }
+        share.to(Apps.WECHAT, function() {
+          console.log('Nothing support wechat')
+        })
+      }, false)
+      document.getElementById('shareToMoments').addEventListener('click', function() {
+        share.to(Apps.MOMENTS, function() {
+          console.log('Nothing support moments')
+        })
       }, false)
     })
 

@@ -1,4 +1,4 @@
-import { OS } from './constants'
+import { OS, Apps } from './constants'
 
 export function concatURL (baseUrl, queryStrData, encode = false) {
   const queryStr = Object.keys(queryStrData).map(i => {
@@ -22,6 +22,18 @@ export function openBySchema (schema, data, os) {
     setTimeout(() => {
       iframe && iframe.parentNode && iframe.parentNode.removeChild(iframe)
     }, 2000)
+  }
+}
+
+export function openQQOrQzone (appName, osName) {
+  if (appName === Apps.QQ) {
+    if (osName === OS.IOS) {
+      openBySchema('mqqapi://share/to_fri', {
+        'src_type': 'web',
+        'version': 1,
+        'file_type': 'news'
+      })
+    }
   }
 }
 

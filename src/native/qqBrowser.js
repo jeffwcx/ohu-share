@@ -1,10 +1,12 @@
 
 import Native from './native'
 import { Apps } from '../constants'
+import { loadJS } from '../utils'
 
 export default class QQBrowser extends Native {
   constructor (context) {
     super(context)
+    loadJS('//jsapi.qq.com/get?api=app.share')
   }
   static appMap = {
     [Apps.WECHAT]: 1,

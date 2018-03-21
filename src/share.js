@@ -30,33 +30,43 @@ export default class Share {
   constructor (shareData) {
     const browserInfo = new Detector(navigator.userAgent)
     this.context = new Context(shareData, browserInfo)
-    this._getShareBrowser()
-  }
-  _getShareBrowser () {
-    if (this.context.browserName !== undefined) {
-      const BrowserShareClass = nativeList[this.context.browserName]
-      if (BrowserShareClass) {
-        this.supportNative = true
-        this.instance = new BrowserShareClass(this.context)
-        return
-      }
-    }
-    this.supportNative = false
+    this.instance = null
   }
 
-  to (appName, notSupportCall) {
-    if (!this.supportNative) {
+  to (appName, callback) {
+    let supportNative = false
+    let BrowserShareClass
+    if (this.context.browserName !== undefined &&
+      nativeList[this.context.browserName]) {
+      BrowserShareClass = nativeList[this.context.browserName]
+      if (BrowserShareClass.appMap[appName]) {
+        supportNative = true
+      }
+    }
+
+    let noneSupport = false
+    if (supportNative) {
+      this.instance = new BrowserShareClass(this.context)
+    } else {
       const UrlShareClass = urlList[appName]
       if (UrlShareClass) {
         this.instance = new UrlShareClass(this.context)
       } else {
-        notSupportCall(this.context)
+        noneSupport = true
       }
     }
-    try {
-      this.instance.share(appName)
-    } catch (error) {
-      notSupportCall(this.context)
+
+    if (!noneSupport) {
+      try {
+        this.instance.share(appName)
+      } catch (error) {
+        console.warn(error)
+        noneSupport = true
+      }
+    }
+
+    if (noneSupport) {
+      callback && callback()
     }
   }
 }

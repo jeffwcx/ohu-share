@@ -11,8 +11,8 @@ export default class UC extends Native {
       [OS.ANDROID]: 'WechatFriends'
     },
     [Apps.MOMENTS]: {
-      [OS.IOS]: 'WechatTimeline',
-      [OS.ANDROID]: 'kWeixinFriend'
+      [OS.IOS]: 'kWeixinFriend',
+      [OS.ANDROID]: 'WechatTimeline'
     },
     [Apps.QQ]: {
       [OS.IOS]: 'kQQ',
@@ -20,7 +20,7 @@ export default class UC extends Native {
     },
     [Apps.QZONE]: {
       [OS.IOS]: 'kQZone',
-      [OS.ANDROID]: 'QZone'
+      [OS.ANDROID]: 'Qzone'
     },
     [Apps.WEIBO]: {
       [OS.IOS]: 'kSinaWeibo',
@@ -51,8 +51,9 @@ export default class UC extends Native {
       shareData.desc,
       shareData.link,
       this.toApp,
+      '',
       `@${shareData.from}`,
-      ''
+      shareData.icon
     ]
     if (typeof (ucweb) !== 'undefined') {
       ucweb.startRequest('shell.page_share', dataUCNeed)
