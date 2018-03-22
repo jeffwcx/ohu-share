@@ -17,7 +17,8 @@
   "globals": {
     "ucweb": true,
     "ucbrowser": true,
-    "browser": true
+    "browser": true,
+    "_flyflowNative": true
   },
   "rules": {
     "no-useless-constructor": "off"   

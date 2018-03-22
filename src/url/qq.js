@@ -13,7 +13,4 @@ export default class QQ extends URL {
       summary: this.shareData.desc
     })
   }
-  share () {
-    super.share()
-  }
 }

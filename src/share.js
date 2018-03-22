@@ -4,6 +4,7 @@ import Context from './context'
 import urlList from './url'
 import nativeList from './native'
 import schemeList from './scheme'
+import { ALLSUPPORT } from './constants'
 /**
  * import { Share, Browsers, Apps } from 'ohu-share'
  *
@@ -32,7 +33,8 @@ let TargetClass = null
 let SHARE_STRATEGY = [function getNativeShare (context, appName) {
   if (context.browserName !== undefined &&
     nativeList[context.browserName]) {
-    if (nativeList[context.browserName].appMap[appName]) {
+    const cls = nativeList[context.browserName]
+    if (cls.appMap === ALLSUPPORT || cls.appMap[appName]) {
       TargetClass = nativeList[context.browserName]
       return true
     }
@@ -66,7 +68,7 @@ export default class Share {
       return execStrategy(this.context, appName)
     })
 
-    if (result) this.instance = new TargetClass(this.context)
+    if (result && TargetClass) this.instance = new TargetClass(this.context)
     else noneSupport = true
 
     if (!noneSupport) {

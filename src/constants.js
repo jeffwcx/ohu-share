@@ -21,4 +21,6 @@ const OS = {
   IOS: 'ios'
 }
 
-export { Browsers, Apps, OS }
+const ALLSUPPORT = 'allsupport'
+
+export { Browsers, Apps, OS, ALLSUPPORT }

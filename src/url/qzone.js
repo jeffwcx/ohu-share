@@ -13,7 +13,4 @@ export default class Weibo extends URL {
       otype: 'share'
     })
   }
-  share () {
-    super.share()
-  }
 }

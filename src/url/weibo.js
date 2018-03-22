@@ -16,7 +16,4 @@ export default class Weibo extends URL {
       language: 'zh_cn'
     })
   }
-  share () {
-    super.share()
-  }
 }
