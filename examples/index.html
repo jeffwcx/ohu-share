@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,9 +14,27 @@
   <button id="shareToQZone">ShareToQZone</button>
   <button id="shareToWeixin">shareToWechat</button>
   <button id="shareToMoments">shareToMoments</button>
+  <a href="mqqapi://share/to_qzone?src_type=isqqBrowser&version=1&file_type=news&req_type=1&share_id=924053302&url=aHR0cHM6Ly9naXRodWIuY29tL2plZmZ3Y3g=&title=566A5Y2V5L6L5a2Q&description=566A5Y2V55qE5pGY6KaB5ZKM5o+P6L+w&previewimageUrl=aHR0cHM6Ly9hdmF0YXJzMS5naXRodWJ1c2VyY29udGVudC5jb20vdS8xNDA3Mzc3NT9zPTQ2MCZ2PTQ=&image_url=aHR0cHM6Ly9hdmF0YXJzMS5naXRodWJ1c2VyY29udGVudC5jb20vdS8xNDA3Mzc3NT9zPTQ2MCZ2PTQ=">
+    schema test
+  </a>
+  <button id="openApp">openApp</button>
+  <input id="scheme" type="text" />
   <script src="../dist/ohu-share.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      var scheme = document.getElementById('scheme')
+      function openByScheme (url) {
+        window.location.href = url
+        // var iframe = document.createElement('iframe')
+        // iframe.style.visibility = 'hidden'
+        // document.body.appendChild(iframe)
+        // setTimeout(() => {
+        //   iframe && iframe.parentNode && iframe.parentNode.removeChild(iframe)
+        // }, 2000)
+      }
+      document.getElementById('openApp').addEventListener('click', function() {
+        openByScheme(scheme.value)
+      })
       var share = new ohu.Share({
         title: '简单例子',
         desc: '简单的摘要和描述',

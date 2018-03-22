@@ -3,6 +3,7 @@ import Detector from 'ohu-detect'
 import Context from './context'
 import urlList from './url'
 import nativeList from './native'
+import schemeList from './scheme'
 /**
  * import { Share, Browsers, Apps } from 'ohu-share'
  *
@@ -26,6 +27,32 @@ import nativeList from './native'
  * })
  */
 
+let TargetClass = null
+
+let SHARE_STRATEGY = [function getNativeShare (context, appName) {
+  if (context.browserName !== undefined &&
+    nativeList[context.browserName]) {
+    if (nativeList[context.browserName].appMap[appName]) {
+      TargetClass = nativeList[context.browserName]
+      return true
+    }
+  }
+  return false
+}, function getSchemeShare (context, appName) {
+  if (schemeList[appName] &&
+    schemeList[appName].strategy[this.context.browserName]) {
+    TargetClass = schemeList[appName]
+    return true
+  }
+  return false
+}, function getURLShare (context, appName) {
+  if (urlList[appName]) {
+    TargetClass = urlList[appName]
+    return true
+  }
+  return false
+}]
+
 export default class Share {
   constructor (shareData) {
     const browserInfo = new Detector(navigator.userAgent)
@@ -34,27 +61,13 @@ export default class Share {
   }
 
   to (appName, callback) {
-    let supportNative = false
-    let BrowserShareClass
-    if (this.context.browserName !== undefined &&
-      nativeList[this.context.browserName]) {
-      BrowserShareClass = nativeList[this.context.browserName]
-      if (BrowserShareClass.appMap[appName]) {
-        supportNative = true
-      }
-    }
-
     let noneSupport = false
-    if (supportNative) {
-      this.instance = new BrowserShareClass(this.context)
-    } else {
-      const UrlShareClass = urlList[appName]
-      if (UrlShareClass) {
-        this.instance = new UrlShareClass(this.context)
-      } else {
-        noneSupport = true
-      }
-    }
+    const result = SHARE_STRATEGY.some((execStrategy) => {
+      return execStrategy(this.context, appName)
+    })
+
+    if (result) this.instance = new TargetClass(this.context)
+    else noneSupport = true
 
     if (!noneSupport) {
       try {

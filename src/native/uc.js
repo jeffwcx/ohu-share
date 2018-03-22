@@ -1,5 +1,5 @@
 import { Apps, OS } from '../constants'
-import { openBySchema } from '../utils'
+import { openByScheme } from '../utils'
 import Native from './native'
 export default class UC extends Native {
   constructor (context) {
@@ -31,7 +31,7 @@ export default class UC extends Native {
   share (appName) {
     const shareData = this.context.shareData
     if (appName === Apps.QZONE) {
-      openBySchema('mqqapi://share/to_qzone', {
+      openByScheme('mqqapi://share/to_qzone', {
         'src_type': 'web',
         'verison': '1',
         'file_type': 'news',
