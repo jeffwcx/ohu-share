@@ -4,14 +4,16 @@
  */
 
 import Native from './native'
-import { ALLSUPPORT, OS } from '../constants'
+import { OS } from '../constants'
 import { openByScheme } from '../utils'
 
 export default class BaiduBrowser extends Native {
   constructor (context) {
     super(context)
   }
-  static appMap = ALLSUPPORT
+  static isSupport (context, appName) {
+    return true
+  }
   share (appName) {
     const shareData = this.context.shareData
     const dataBaiduBrowserNeed = {
@@ -26,7 +28,7 @@ export default class BaiduBrowser extends Native {
       openByScheme('baidubrowserapp://bd_utils', {
         action: 'shareWebPage',
         params: encodeURIComponent(dataBaiduBrowserNeed)
-      })
+      }, this.context.osName)
     } else {
       if (typeof (_flyflowNative) !== 'undefined') {
         _flyflowNative.exec(

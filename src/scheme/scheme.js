@@ -9,6 +9,6 @@ export default class Scheme {
     return ''
   }
   share () {
-    openByScheme(this.scheme)
+    openByScheme(this.scheme, undefined, this.context.osName)
   }
 }

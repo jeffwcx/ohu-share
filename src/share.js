@@ -4,7 +4,6 @@ import Context from './context'
 import urlList from './url'
 import nativeList from './native'
 import schemeList from './scheme'
-import { ALLSUPPORT } from './constants'
 /**
  * import { Share, Browsers, Apps } from 'ohu-share'
  *
@@ -33,17 +32,18 @@ let TargetClass = null
 let SHARE_STRATEGY = [function getNativeShare (context, appName) {
   if (context.browserName !== undefined &&
     nativeList[context.browserName]) {
-    const cls = nativeList[context.browserName]
-    if (cls.appMap === ALLSUPPORT || cls.appMap[appName]) {
-      TargetClass = nativeList[context.browserName]
+    const ShareClass = nativeList[context.browserName]
+    if (ShareClass.isSupport(context, appName)) {
+      TargetClass = ShareClass
       return true
     }
   }
   return false
 }, function getSchemeShare (context, appName) {
-  if (schemeList[appName] &&
-    schemeList[appName].strategy[this.context.browserName]) {
-    TargetClass = schemeList[appName]
+  const ShareClass = schemeList[appName]
+  if (ShareClass &&
+    ShareClass.isSupport(context, appName)) {
+    TargetClass = ShareClass
     return true
   }
   return false

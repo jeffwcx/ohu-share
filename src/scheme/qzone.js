@@ -7,21 +7,7 @@ export default class Qzone extends Scheme {
   constructor (context) {
     super(context)
   }
-  static strategy= {
-    [OS.IOS]: {
-      scheme: 'mqqapi://share/to_fri',
-      query: {
-        'file_type': 'new',
-        'src_type': 'web',
-        'version': 1,
-        'generalpastboard': 1,
-        'shareType': 1,
-        'cflag': 1,
-        'objectlocation': 'pasteboard',
-        'callback_type': 'scheme',
-        'callback_name': 'QQ41AF4B2A'
-      }
-    },
+  static strategy = {
     [OS.ANDROID]: {
       scheme: 'mqqapi://share/to_qzone',
       query: {
@@ -31,6 +17,11 @@ export default class Qzone extends Scheme {
         'req_type': 1
       }
     }
+  }
+
+  static isSupport (context, appName) {
+    if (Qzone.strategy[context.osName] !== undefined) return true
+    return false
   }
   createScheme () {
     this.strategy = Qzone.strategy[this.context.osName]

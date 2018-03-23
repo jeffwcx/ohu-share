@@ -11,15 +11,20 @@ export function concatURL (baseUrl, queryStrData, encode = false) {
   return baseUrl + (queryStr ? `?${queryStr}` : '')
 }
 
-export function openByScheme (scheme, data) {
+export function openByScheme (scheme, data, osName) {
   const completeSchema = data ? concatURL(scheme, data) : scheme
   window.location.href = completeSchema
-  // const iframe = document.createElement('iframe')
-  // iframe.style.visibility = 'hidden'
-  // document.body.appendChild(iframe)
-  // setTimeout(() => {
-  //   iframe && iframe.parentNode && iframe.parentNode.removeChild(iframe)
-  // }, 2000)
+  // if (osName === OS.IOS) {
+  //   const iframe = document.createElement('iframe')
+  //   iframe.src = completeSchema
+  //   iframe.style.visibility = 'hidden'
+  //   document.body.appendChild(iframe)
+  //   setTimeout(() => {
+  //     iframe && iframe.parentNode && iframe.parentNode.removeChild(iframe)
+  //   }, 2000)
+  // } else {
+  //   window.location.href = completeSchema
+  // }
 }
 
 export function utoa (str) {

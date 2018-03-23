@@ -2,6 +2,7 @@ const Browsers = {
   QQBROWSER: 'qqbrowser',
   UC: 'uc',
   BAIDUBROWSER: 'baidubrowser',
+  BAIDU: 'baidu',
   QQ: 'qq',
   WECHAT: 'wechat',
   LIEBAO: 'liebao',

@@ -18,6 +18,10 @@ export default class QQBrowser extends Native {
     [Apps.QZONE]: 3,
     [Apps.WEIBO]: 11
   }
+  static isSupport (context, appName) {
+    if (QQBrowser.appMap[appName] !== undefined) return true
+    return false
+  }
   share (appName) {
     return this.loadPromise.then(() => {
       const shareData = this.context.shareData

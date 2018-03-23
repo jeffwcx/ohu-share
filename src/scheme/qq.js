@@ -7,7 +7,7 @@ export default class QQ extends Scheme {
   constructor (context) {
     super(context)
   }
-  static strategy= {
+  static strategy = {
     [OS.IOS]: {
       scheme: 'mqqapi://share/to_fri',
       query: {
@@ -24,6 +24,11 @@ export default class QQ extends Scheme {
         'file_type': 'news'
       }
     }
+  }
+
+  static isSupport (context, appName) {
+    if (QQ.strategy[context.osName] !== undefined) return true
+    return false
   }
   createScheme () {
     this.strategy = QQ.strategy[this.context.osName]

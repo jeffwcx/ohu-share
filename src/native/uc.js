@@ -27,7 +27,10 @@ export default class UC extends Native {
       [OS.ANDROID]: 'SinaWeibo'
     }
   }
-
+  static isSupport (context, appName) {
+    if (UC.appMap[appName] !== undefined) return true
+    return false
+  }
   share (appName) {
     const shareData = this.context.shareData
     if (appName === Apps.QZONE) {
