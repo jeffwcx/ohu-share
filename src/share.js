@@ -12,7 +12,13 @@ import schemeList from './scheme'
  *   desc: 'desc',
  *   icon: 'icon',
  *   link: 'link',
- *   from: 'from'
+ *   from: 'from',
+ *   wechat: {
+ *     appId: '',
+ *     timestamp: '',
+ *     nonceStr: '',
+ *     signature: ''
+ *   }
  * })
  *
  * share.to(App.WECHAT)

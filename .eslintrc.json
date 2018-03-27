@@ -18,7 +18,10 @@
     "ucweb": true,
     "ucbrowser": true,
     "browser": true,
-    "_flyflowNative": true
+    "_flyflowNative": true,
+    "mqq": true,
+    "wx": true,
+    "SogouMse": true
   },
   "rules": {
     "no-useless-constructor": "off"   

@@ -52,6 +52,7 @@ export function loadJS (src) {
       const el = document.createElement('script')
       el.src = src
       document.body.appendChild(el)
+      el.async = true
       el.onload = function () {
         resolve()
       }

@@ -28,8 +28,7 @@ export default class UC extends Native {
     }
   }
   static isSupport (context, appName) {
-    if (UC.appMap[appName] !== undefined) return true
-    return false
+    return UC.appMap[appName] !== undefined
   }
   share (appName) {
     const shareData = this.context.shareData

@@ -9,7 +9,11 @@ import { loadJS } from '../utils'
 export default class QQBrowser extends Native {
   constructor (context) {
     super(context)
-    this.loadPromise = loadJS('//jsapi.qq.com/get?api=app.share')
+    if (typeof (browser) === 'undefined') {
+      this.loadApi = loadJS('//jsapi.qq.com/get?api=app.share')
+    } else {
+      this.loadApi = Promise.resolve()
+    }
   }
   static appMap = {
     [Apps.WECHAT]: 1,
@@ -19,18 +23,18 @@ export default class QQBrowser extends Native {
     [Apps.WEIBO]: 11
   }
   static isSupport (context, appName) {
-    if (QQBrowser.appMap[appName] !== undefined) return true
-    return false
+    return QQBrowser.appMap[appName] !== undefined
   }
   share (appName) {
-    return this.loadPromise.then(() => {
+    return this.loadApi.then(() => {
       const shareData = this.context.shareData
       const dataQQNeed = {
         url: shareData.link,
         title: shareData.title,
         img_url: shareData.icon,
         img_title: '',
-        to_app: QQBrowser.appMap[appName] || ''
+        to_app: QQBrowser.appMap[appName] || '',
+        cus_txt: shareData.title + `@${shareData.from}`
       }
       if (typeof (browser) !== 'undefined' &&
         typeof (browser.app) !== 'undefined' &&
