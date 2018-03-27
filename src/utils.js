@@ -66,3 +66,7 @@ export function loadJS (src) {
 export function isMobile (osName) {
   return osName === OS.IOS || osName === OS.ANDROID
 }
+
+export function getErrorFunc (msg) {
+  return function () { throw new Error(msg) }
+}

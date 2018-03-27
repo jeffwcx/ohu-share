@@ -51,28 +51,52 @@
       console.log(share.context)
       var Apps = ohu.Apps
       document.getElementById('shareToWeibo').addEventListener('click', function() {
-        share.to(Apps.WEIBO, function () {
-          console.log('Nothing support WEIBO')
+        share.to(Apps.WEIBO)
+        .then(function (isSupport) {
+          if (!isSupport) {
+            console.log('无法支持微博')
+          }
+        }).catch((err) => {
+          console.log(err)
         })
       }, false)
       document.getElementById('shareToQQ').addEventListener('click', function() {
-        share.to(Apps.QQ, function() {
-          console.log('Nothing support QQ')
+        share.to(Apps.QQ)
+        .then(function (isSupport) {
+          if (!isSupport) {
+            console.log('无法支持QQ')
+          }
+        }).catch((err) => {
+          console.log(err)
         })
       }, false)
       document.getElementById('shareToQZone').addEventListener('click', function() {
-        share.to(Apps.QZONE, function() {
-          console.log('Nothing support Qzone')
+        share.to(Apps.QZONE)
+        .then(function (isSupport) {
+          if (!isSupport) {
+            console.log('无法支持Qzone')
+          }
+        }).catch((err) => {
+          console.log(err)
         })
       }, false)
       document.getElementById('shareToWeixin').addEventListener('click', function() {
-        share.to(Apps.WECHAT, function() {
-          console.log('Nothing support wechat')
+        share.to(Apps.WECHAT)
+        .then(function (isSupport) {
+          if (!isSupport) {
+            console.log('无法支持Wechat')
+          }
+        }).catch((err) => {
+          console.log(err)
         })
       }, false)
       document.getElementById('shareToMoments').addEventListener('click', function() {
-        share.to(Apps.MOMENTS, function() {
-          console.log('Nothing support moments')
+        share.to(Apps.MOMENTS).then(function (isSupport) {
+          if (!isSupport) {
+            console.log('无法支持wechat moments')
+          }
+        }).catch((err) => {
+          console.log(err)
         })
       }, false)
     })

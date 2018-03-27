@@ -2,28 +2,39 @@
 /**
  * Sogou support
  */
-import Native from './native'
 import { Apps } from '../constants'
+import Invoker from '../invoker'
 
-export default class Sogou extends Native {
+export default class Sogou extends Invoker {
   constructor (context) {
     super(context)
-  }
-  static appMap = {
-    [Apps.WECHAT]: 2,
-    [Apps.MOMENTS]: 4
-  }
-  static isSupport (context, appName) {
-    return undefined !== Sogou.appMap[appName]
-  }
-  share (appName) {
-    const dataSogouNeed = {
+    this._rawData = {
       shareTitle: this.shareData.title,
       shareContent: this.shareData.desc,
       shareImageUrl: this.shareData.icon,
       shareUrl: this.shareData.link
     }
-    window.shareInfo = dataSogouNeed
-    SogouMse.Utility.shareWithInfo(dataSogouNeed)
+  }
+  static APPMAP = {
+    [Apps.WECHAT]: true,
+    [Apps.MOMENTS]: true
+  }
+  get actualData () {
+    return this._rawData
+  }
+  preset () {
+    window.shareInfo = this.actualData
+    this.finallyInvoke = () => {
+      SogouMse.Utility.shareWithInfo(this.actualData)
+    }
+    return true
+  }
+  isSupport (app) {
+    return Sogou.APPMAP[app]
+  }
+  invoke (app) {
+    return this.loader.then(() => {
+      return this.finallyInvoke()
+    })
   }
 }

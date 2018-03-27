@@ -1,9 +1,9 @@
 
-import Scheme from './scheme'
+import Invoker from '../invoker'
 import { OS } from '../constants'
 import { getQQOrQzoneQueryData, concatURL } from '../utils'
 
-export default class QQ extends Scheme {
+export default class QQ extends Invoker {
   constructor (context) {
     super(context)
   }
@@ -25,17 +25,28 @@ export default class QQ extends Scheme {
       }
     }
   }
-
-  static isSupport (context, appName) {
-    if (QQ.strategy[context.osName] !== undefined) return true
+  preset () {
+    if (QQ.strategy[this.context.osName] !== undefined) {
+      this.strategy = QQ.strategy[this.context.osName]
+      if (this.strategy) {
+        const completeUrl = concatURL(this.strategy.scheme,
+          Object.assign({},
+            this.strategy.query,
+            getQQOrQzoneQueryData(this.context.shareData)
+          )
+        )
+        this.completeUrl = completeUrl
+      }
+      return true
+    }
     return false
   }
-  createScheme () {
-    this.strategy = QQ.strategy[this.context.osName]
-    if (this.strategy) {
-      const completeUrl = concatURL(this.strategy.scheme,
-        Object.assign({}, this.strategy.query, getQQOrQzoneQueryData(this.context.shareData)))
-      return completeUrl
-    }
+  isSupport (app) {
+    return true
+  }
+  invoke () {
+    return this.loader.then(() => {
+      return this._openScheme(this.completeUrl)
+    })
   }
 }

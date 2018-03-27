@@ -2,50 +2,66 @@
 /**
  * QQBrowser native browser call
  */
-import Native from './native'
+
+import Invoker from '../invoker'
 import { Apps } from '../constants'
 import { loadJS } from '../utils'
 
-export default class QQBrowser extends Native {
+export default class QQBrowser extends Invoker {
   constructor (context) {
     super(context)
-    if (typeof (browser) === 'undefined') {
-      this.loadApi = loadJS('//jsapi.qq.com/get?api=app.share')
-    } else {
-      this.loadApi = Promise.resolve()
-    }
+    this.preload()
   }
-  static appMap = {
+  static APPMAP = {
     [Apps.WECHAT]: 1,
     [Apps.MOMENTS]: 8,
     [Apps.QQ]: 4,
     [Apps.QZONE]: 3,
     [Apps.WEIBO]: 11
   }
-  static isSupport (context, appName) {
-    return QQBrowser.appMap[appName] !== undefined
+  preload () {
+    if (typeof (browser) === 'undefined') {
+      this.loader = loadJS('//jsapi.qq.com/get?api=app.share')
+    }
+    return this.loader
   }
-  share (appName) {
-    return this.loadApi.then(() => {
-      const shareData = this.context.shareData
-      const dataQQNeed = {
+  set actualData (app) {
+    const shareData = this.shareData
+    const toApp = QQBrowser.APPMAP[app]
+    if (!this._rawData) {
+      this._rawData = {
         url: shareData.link,
         title: shareData.title,
         img_url: shareData.icon,
         img_title: '',
-        to_app: QQBrowser.appMap[appName] || '',
-        cus_txt: shareData.title + `@${shareData.from}`
+        to_app: toApp,
+        cus_txt: shareData.title
       }
-      if (typeof (browser) !== 'undefined' &&
-        typeof (browser.app) !== 'undefined' &&
-        browser.app.share) {
-        return browser.app.share(dataQQNeed)
-      } else if (typeof (window.qb) !== 'undefined' &&
-        window.qb.share) {
-        return window.qb.share(dataQQNeed)
-      } else {
-        throw new Error('Not support!')
-      }
+    } else {
+      this._rawData['to_app'] = toApp
+    }
+  }
+  get actualData () {
+    return this._rawData
+  }
+  preset () {
+    if (typeof (browser) !== 'undefined' &&
+      typeof (browser.app) !== 'undefined') {
+      this.finallyInvoke = () => browser.app.share(this.actualData)
+      return true
+    } else if (typeof (window.qb) !== 'undefined') {
+      this.finallyInvoke = () => window.qb.share(this.actualData)
+      return true
+    }
+    return false
+  }
+  isSupport (app) {
+    return QQBrowser.APPMAP[app] !== undefined
+  }
+  invoke (app) {
+    this.actualData = app
+    return this.loader.then(() => {
+      return this.finallyInvoke()
     })
   }
 }

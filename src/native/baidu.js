@@ -3,19 +3,13 @@
  * Baidu browser native call
  */
 
-import Native from './native'
+import Invoker from '../invoker'
 import { OS } from '../constants'
-import { openByScheme } from '../utils'
-export default class Baidu extends Native {
+export default class Baidu extends Invoker {
   constructor (context) {
     super(context)
-  }
-  static isSupport (context, appName) {
-    return true
-  }
-  share (appName) {
     const shareData = this.context.shareData
-    const dataBaiduNeed = {
+    this._rawDataObj = {
       title: shareData.title,
       context: shareData.desc,
       linkUrl: shareData.link,
@@ -23,23 +17,33 @@ export default class Baidu extends Native {
       mediaType: 'all',
       imageUrl: ''
     }
-    const dataStr = JSON.stringify(dataBaiduNeed)
-    if (this.context.osName === OS.ANDROID) {
-      window.prompt(`BdboxApp:${JSON.stringify({
-        obj: 'Bdbox_android_utils',
-        func: 'callShare',
-        args: [
-          dataStr,
-          '',
-          ''
-        ]
-      })}`)
-    } else if (this.context.osName === OS.IOS) {
-      openByScheme('baiduboxapp://callShare', {
-        'options': encodeURIComponent(dataStr)
-      })
-    } else {
-      throw new Error('Not support!')
+    const dataStr = JSON.stringify(this._rawDataObj)
+    this._rawData = `BdboxApp:${JSON.stringify({
+      obj: 'Bdbox_android_utils',
+      func: 'callShare',
+      args: [
+        dataStr,
+        '',
+        ''
+      ]
+    })}`
+  }
+  get actualData () {
+    return this._rawData
+  }
+  preset () {
+    if (OS.ANDROID === this.context.osName) {
+      this.finallyInvoke = () => window.prompt(this.actualData)
+      return true
     }
+    return false
+  }
+  isSupport (app) {
+    return true
+  }
+  invoke (app) {
+    return this.loader.then(() => {
+      return this.finallyInvoke()
+    })
   }
 }

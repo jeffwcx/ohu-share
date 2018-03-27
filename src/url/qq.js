@@ -1,16 +1,22 @@
 import { concatURL } from '../utils'
-import URL from './url'
+import Invoker from '../invoker'
 
-export default class QQ extends URL {
+export default class QQ extends Invoker {
   constructor (context) {
     super(context)
   }
-  createURL () {
-    return concatURL('http://connect.qq.com/widget/shareqq/index.html', {
+  preset () {
+    this.completeUrl = concatURL('http://connect.qq.com/widget/shareqq/index.html', {
       title: this.shareData.title,
       url: this.shareData.link,
       pics: this.shareData.icon,
       summary: this.shareData.desc
+    })
+    return true
+  }
+  invoke () {
+    return this.loader.then(() => {
+      return this._openURL(this.completeUrl)
     })
   }
 }

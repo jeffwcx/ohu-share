@@ -1,11 +1,16 @@
+
+/**
+ * UC support
+ */
+
 import { Apps, OS } from '../constants'
-import { openByScheme } from '../utils'
-import Native from './native'
-export default class UC extends Native {
+import Invoker from '../invoker'
+
+export default class UC extends Invoker {
   constructor (context) {
     super(context)
   }
-  static appMap = {
+  static APPMAP = {
     [Apps.WECHAT]: {
       [OS.IOS]: 'kWeixin',
       [OS.ANDROID]: 'WechatFriends'
@@ -27,42 +32,48 @@ export default class UC extends Native {
       [OS.ANDROID]: 'SinaWeibo'
     }
   }
-  static isSupport (context, appName) {
-    return UC.appMap[appName] !== undefined
+  get actualData () {
+    return this._rawData
   }
-  share (appName) {
-    const shareData = this.context.shareData
-    if (appName === Apps.QZONE) {
-      openByScheme('mqqapi://share/to_qzone', {
-        'src_type': 'web',
-        'verison': '1',
-        'file_type': 'news',
-        'image_url': shareData.icon,
-        'title': shareData.title,
-        'description': shareData.desc,
-        'url': shareData.link,
-        'app_name': shareData.from
-      }, this.context.osName)
-    }
-    const target = UC.appMap[appName]
-    if (target) {
-      this.toApp = target[this.context.osName] || ''
-    }
-    const dataUCNeed = [
-      shareData.title,
-      shareData.desc,
-      shareData.link,
-      this.toApp,
-      '',
-      `@${shareData.from}`,
-      shareData.icon
-    ]
-    if (typeof (ucweb) !== 'undefined') {
-      ucweb.startRequest('shell.page_share', dataUCNeed)
-    } else if (typeof (ucbrowser) !== 'undefined') {
-      ucbrowser.web_share(...dataUCNeed)
+  set actualData (app) {
+    const shareData = this.shareData
+    const target = UC.APPMAP[app]
+    const toApp = target[this.context.osName]
+    if (!this._rawData) {
+      this._rawData = [
+        shareData.title,
+        shareData.desc,
+        shareData.link,
+        toApp,
+        '',
+        `@${shareData.from}`,
+        shareData.icon
+      ]
     } else {
-      throw new Error('Not support!')
+      this._rawData[3] = toApp
     }
+  }
+  preset () {
+    if (typeof (ucweb) !== 'undefined') {
+      this.finallyInvoke = () => {
+        ucweb.startRequest('shell.page_share', this.actualData)
+      }
+      return true
+    } else if (typeof (ucbrowser) !== 'undefined') {
+      this.finallyInvoke = () => {
+        ucbrowser.web_share(...this.actualData)
+      }
+      return true
+    }
+    return false
+  }
+  isSupport (app) {
+    return UC.APPMAP[app] !== undefined
+  }
+  invoke (app) {
+    this.actualData = app
+    return this.loader.then(() => {
+      return this.finallyInvoke()
+    })
   }
 }
