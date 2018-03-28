@@ -4299,9 +4299,7 @@ var WeChat = function (_Invoker) {
     key: 'isSupport',
     value: function isSupport(appName) {
       if (__WEBPACK_IMPORTED_MODULE_6__constants__["c" /* OS */].WINDOWS === this.context.osName) {
-        if (__WEBPACK_IMPORTED_MODULE_6__constants__["a" /* Apps */].MOMENTS === appName || __WEBPACK_IMPORTED_MODULE_6__constants__["a" /* Apps */].WECHAT === appName) {
-          return true;
-        }
+        return __WEBPACK_IMPORTED_MODULE_6__constants__["a" /* Apps */].MOMENTS === appName || __WEBPACK_IMPORTED_MODULE_6__constants__["a" /* Apps */].WECHAT === appName;
       }
       return __WEBPACK_IMPORTED_MODULE_6__constants__["a" /* Apps */].WEIBO !== appName;
     }
