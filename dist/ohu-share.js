@@ -107,7 +107,8 @@ var Apps = {
 
 var OS = {
   ANDROID: 'android',
-  IOS: 'ios'
+  IOS: 'ios',
+  WINDOWS: 'windows'
 };
 
 var SUPPORT = {
@@ -4297,7 +4298,12 @@ var WeChat = function (_Invoker) {
   }, {
     key: 'isSupport',
     value: function isSupport(appName) {
-      return appName !== __WEBPACK_IMPORTED_MODULE_6__constants__["a" /* Apps */].WEIBO;
+      if (__WEBPACK_IMPORTED_MODULE_6__constants__["c" /* OS */].WINDOWS === this.context.osName) {
+        if (__WEBPACK_IMPORTED_MODULE_6__constants__["a" /* Apps */].MOMENTS === appName || __WEBPACK_IMPORTED_MODULE_6__constants__["a" /* Apps */].WECHAT === appName) {
+          return true;
+        }
+      }
+      return __WEBPACK_IMPORTED_MODULE_6__constants__["a" /* Apps */].WEIBO !== appName;
     }
   }, {
     key: 'invoke',

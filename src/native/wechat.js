@@ -4,7 +4,7 @@
  */
 
 import { loadJS } from '../utils'
-import { Apps, SUPPORT } from '../constants'
+import { Apps, SUPPORT, OS } from '../constants'
 import Invoker from '../invoker'
 
 export default class WeChat extends Invoker {
@@ -52,7 +52,12 @@ export default class WeChat extends Invoker {
     return true
   }
   isSupport (appName) {
-    return appName !== Apps.WEIBO
+    if (OS.WINDOWS === this.context.osName) {
+      if (Apps.MOMENTS === appName || Apps.WECHAT === appName) {
+        return true
+      }
+    }
+    return Apps.WEIBO !== appName
   }
   invoke (appName) {
     return this.loader

@@ -19,7 +19,8 @@ const Apps = {
 
 const OS = {
   ANDROID: 'android',
-  IOS: 'ios'
+  IOS: 'ios',
+  WINDOWS: 'windows'
 }
 
 const SUPPORT = {
