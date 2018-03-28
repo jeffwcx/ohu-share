@@ -53,9 +53,7 @@ export default class WeChat extends Invoker {
   }
   isSupport (appName) {
     if (OS.WINDOWS === this.context.osName) {
-      if (Apps.MOMENTS === appName || Apps.WECHAT === appName) {
-        return true
-      }
+      return Apps.MOMENTS === appName || Apps.WECHAT === appName
     }
     return Apps.WEIBO !== appName
   }
