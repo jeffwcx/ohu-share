@@ -4,12 +4,13 @@
  */
 
 import Invoker from '../invoker'
-import { Apps } from '../constants'
+import { Apps, SUPPORT } from '../constants'
 import { loadJS } from '../utils'
 
 export default class QQBrowser extends Invoker {
   constructor (context) {
     super(context)
+    this.supportType = SUPPORT.LEVEL1
     this.preload()
   }
   static APPMAP = {

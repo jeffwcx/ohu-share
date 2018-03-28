@@ -4,12 +4,13 @@
  */
 
 import Invoker from '../invoker'
-import { OS, Apps } from '../constants'
+import { OS, Apps, SUPPORT } from '../constants'
 import { openByScheme } from '../utils'
 
 export default class BaiduBrowser extends Invoker {
   constructor (context) {
     super(context)
+    this.supportType = SUPPORT.LEVEL2
     const shareData = this.shareData
     this._rawData = {
       title: shareData.title,

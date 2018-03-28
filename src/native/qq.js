@@ -5,11 +5,12 @@
 
 import Invoker from '../invoker'
 import { loadJS } from '../utils'
-import { Apps } from '../constants'
+import { Apps, SUPPORT } from '../constants'
 
 export default class QQ extends Invoker {
   constructor (context) {
     super(context)
+    this.supportType = SUPPORT.LEVEL1
     this.preload()
   }
   static APPMAP = {

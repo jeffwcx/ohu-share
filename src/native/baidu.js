@@ -4,10 +4,11 @@
  */
 
 import Invoker from '../invoker'
-import { OS } from '../constants'
+import { OS, SUPPORT } from '../constants'
 export default class Baidu extends Invoker {
   constructor (context) {
     super(context)
+    this.supportType = SUPPORT.LEVEL2
     const shareData = this.context.shareData
     this._rawDataObj = {
       title: shareData.title,

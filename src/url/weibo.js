@@ -1,8 +1,10 @@
 import { concatURL, isMobile } from '../utils'
 import Invoker from '../invoker'
+import { SUPPORT } from '../constants'
 export default class Weibo extends Invoker {
   constructor (context) {
     super(context)
+    this.supportType = SUPPORT.LEVEL6
   }
   preset () {
     const baseUrl = `http://service.weibo.com/share/` +

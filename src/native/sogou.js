@@ -2,12 +2,13 @@
 /**
  * Sogou support
  */
-import { Apps } from '../constants'
+import { Apps, SUPPORT } from '../constants'
 import Invoker from '../invoker'
 
 export default class Sogou extends Invoker {
   constructor (context) {
     super(context)
+    this.supportType = SUPPORT.LEVEL2
     this._rawData = {
       shareTitle: this.shareData.title,
       shareContent: this.shareData.desc,

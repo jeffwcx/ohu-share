@@ -38,7 +38,7 @@
       var share = new ohu.Share({
         title: '简单例子',
         desc: '简单的摘要和描述',
-        icon: 'https://avatars1.githubusercontent.com/u/14073775?s=460&v=4',
+        icon: 'https://avatars0.githubusercontent.com/u/14073775?s=40&u=db665a9c327b60d8e4f097ee949fa5f77187e31a&v=4',
         link: 'https://github.com/jeffwcx',
         from: 'github',
         wechat: {
@@ -48,12 +48,14 @@
           signature: ''
         }
       })
+      var SUPPORT = ohu.SUPPORT
       console.log(share.context)
       var Apps = ohu.Apps
       document.getElementById('shareToWeibo').addEventListener('click', function() {
         share.to(Apps.WEIBO)
-        .then(function (isSupport) {
-          if (!isSupport) {
+        .then(function (support) {
+          console.log(support)
+          if (!support.isSupport) {
             console.log('无法支持微博')
           }
         }).catch((err) => {
@@ -62,9 +64,14 @@
       }, false)
       document.getElementById('shareToQQ').addEventListener('click', function() {
         share.to(Apps.QQ)
-        .then(function (isSupport) {
-          if (!isSupport) {
+        .then(function (support) {
+          console.log(support)
+          if (!support.isSupport) {
             console.log('无法支持QQ')
+          } else {
+            if (support.supportType === SUPPORT.LEVEL4) {
+              console.log('微信浏览器，只支持自定义分享')
+            }
           }
         }).catch((err) => {
           console.log(err)
@@ -72,9 +79,14 @@
       }, false)
       document.getElementById('shareToQZone').addEventListener('click', function() {
         share.to(Apps.QZONE)
-        .then(function (isSupport) {
-          if (!isSupport) {
+        .then(function (support) {
+          console.log(support)
+          if (!support.isSupport) {
             console.log('无法支持Qzone')
+          } else {
+            if (support.supportType === SUPPORT.LEVEL4) {
+              console.log('微信浏览器，只支持自定义分享')
+            }
           }
         }).catch((err) => {
           console.log(err)
@@ -82,18 +94,28 @@
       }, false)
       document.getElementById('shareToWeixin').addEventListener('click', function() {
         share.to(Apps.WECHAT)
-        .then(function (isSupport) {
-          if (!isSupport) {
+        .then(function (support) {
+          console.log(support)
+          if (!support.isSupport) {
             console.log('无法支持Wechat')
+          } else {
+            if (support.supportType === SUPPORT.LEVEL4) {
+              console.log('微信浏览器，只支持自定义分享')
+            }
           }
         }).catch((err) => {
           console.log(err)
         })
       }, false)
       document.getElementById('shareToMoments').addEventListener('click', function() {
-        share.to(Apps.MOMENTS).then(function (isSupport) {
-          if (!isSupport) {
+        share.to(Apps.MOMENTS).then(function (support) {
+          console.log(support)
+          if (!support.isSupport) {
             console.log('无法支持wechat moments')
+          } else {
+            if (support.supportType === SUPPORT.LEVEL4) {
+              console.log('微信浏览器，只支持自定义分享')
+            }
           }
         }).catch((err) => {
           console.log(err)

@@ -3,12 +3,13 @@
  * UC support
  */
 
-import { Apps, OS } from '../constants'
+import { Apps, OS, SUPPORT } from '../constants'
 import Invoker from '../invoker'
 
 export default class UC extends Invoker {
   constructor (context) {
     super(context)
+    this.supportType = SUPPORT.LEVEL3
   }
   static APPMAP = {
     [Apps.WECHAT]: {

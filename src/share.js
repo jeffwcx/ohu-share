@@ -2,6 +2,7 @@
 import Detector from 'ohu-detect'
 import Context from './context'
 import Strategy from './strategy'
+import { SUPPORT } from './constants'
 
 export default class Share {
   constructor (shareData) {
@@ -12,31 +13,25 @@ export default class Share {
     this.promise = Promise.resolve()
     this.nativeInstance = this.strategy.exec(Strategy.NATIVE) // only native method can be preset
   }
-
   to (app) {
     let finalInstance = null
-    if (this.nativeInstance) {
-      return this.promise.then(() => {
-        return this.nativeInstance
-      }).then(({isSupport, instance}) => {
-        if (!isSupport) {
-          const otherInstance = this.strategy.execByApp(app)
-          if (otherInstance) finalInstance = otherInstance
-          else return false
-        } else {
-          finalInstance = instance
-        }
-        finalInstance.invoke(app)
-        return true
-      })
-    } else {
-      return this.promise.then(() => {
+    return this.promise.then(() => {
+      return this.nativeInstance
+    }).then(({isSupport, instance}) => {
+      if (!instance ||
+        (instance && !isSupport) ||
+        (instance && !instance.isSupport(app))) {
         const otherInstance = this.strategy.execByApp(app)
         if (otherInstance) finalInstance = otherInstance
-        else return false
+      } else {
+        finalInstance = instance
+      }
+      if (finalInstance) {
         finalInstance.invoke(app)
-        return true
-      })
-    }
+        return { isSupport: true, supportType: finalInstance.supportType }
+      } else {
+        return { isSupport: false, supportType: SUPPORT.LEVEL7 }
+      }
+    })
   }
 }

@@ -1,11 +1,12 @@
 
 import Invoker from '../invoker'
-import { OS } from '../constants'
+import { OS, SUPPORT } from '../constants'
 import { getQQOrQzoneQueryData, concatURL } from '../utils'
 
 export default class QQ extends Invoker {
   constructor (context) {
     super(context)
+    this.supportType = SUPPORT.LEVEL5
   }
   static strategy = {
     [OS.IOS]: {

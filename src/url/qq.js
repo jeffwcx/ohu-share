@@ -1,9 +1,11 @@
 import { concatURL } from '../utils'
 import Invoker from '../invoker'
+import { SUPPORT } from '../constants'
 
 export default class QQ extends Invoker {
   constructor (context) {
     super(context)
+    this.supportType = SUPPORT.LEVEL6
   }
   preset () {
     this.completeUrl = concatURL('http://connect.qq.com/widget/shareqq/index.html', {

@@ -1,10 +1,12 @@
 import { openByScheme } from './utils'
+import { SUPPORT } from './constants'
 
 export default class Invoker {
   constructor (context) {
     this.context = context
     this.shareData = this.context.shareData
     this.loader = Promise.resolve()
+    this.supportType = SUPPORT.LEVEL7
     this.finallyInvoke = function () {}
   }
   /**

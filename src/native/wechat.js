@@ -4,13 +4,14 @@
  */
 
 import { loadJS } from '../utils'
-import { Apps } from '../constants'
+import { Apps, SUPPORT } from '../constants'
 import Invoker from '../invoker'
 
 export default class WeChat extends Invoker {
   constructor (context) {
     super(context)
     this.wechatConfig = this.context.shareData.wechat
+    this.supportType = SUPPORT.LEVEL4
     if (this.wechatConfig) {
       this.preload()
     }
@@ -48,7 +49,7 @@ export default class WeChat extends Invoker {
     return this.loader
   }
   preset () {
-    return false
+    return true
   }
   isSupport (appName) {
     return appName !== Apps.WEIBO
