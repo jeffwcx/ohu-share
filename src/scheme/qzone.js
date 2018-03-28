@@ -1,6 +1,6 @@
 
 import { OS, SUPPORT } from '../constants'
-import { getQQOrQzoneQueryData, concatURL } from '../utils'
+import { getQQOrQzoneQueryData, concatURL, isSupportScheme } from '../utils'
 import Invoker from '../invoker'
 
 export default class Qzone extends Invoker {
@@ -21,7 +21,8 @@ export default class Qzone extends Invoker {
   }
 
   preset () {
-    if (Qzone.strategy[this.context.osName] !== undefined) {
+    if (Qzone.strategy[this.context.osName] !== undefined &&
+      isSupportScheme(this.context.browserName)) {
       this.strategy = Qzone.strategy[this.context.osName]
       if (this.strategy) {
         const completeUrl = concatURL(this.strategy.scheme,

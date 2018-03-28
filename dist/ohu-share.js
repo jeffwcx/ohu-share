@@ -374,7 +374,7 @@ exports.default = function (subClass, superClass) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__(0);
 
 
@@ -420,7 +420,7 @@ var Invoker = function () {
   }, {
     key: '_openScheme',
     value: function _openScheme(scheme) {
-      Object(__WEBPACK_IMPORTED_MODULE_3__utils__["e" /* openByScheme */])(scheme);
+      Object(__WEBPACK_IMPORTED_MODULE_3__utils__["g" /* openByScheme */])(scheme);
     }
   }, {
     key: '_openURL',
@@ -466,50 +466,18 @@ exports.default = function (obj, key, value) {
 
 /***/ }),
 /* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var anObject = __webpack_require__(13);
-var IE8_DOM_DEFINE = __webpack_require__(50);
-var toPrimitive = __webpack_require__(37);
-var dP = Object.defineProperty;
-
-exports.f = __webpack_require__(16) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPrimitive(P, true);
-  anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
-    return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
-  return O;
-};
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(15);
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
-  return it;
-};
-
-
-/***/ }),
-/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = concatURL;
-/* harmony export (immutable) */ __webpack_exports__["e"] = openByScheme;
+/* harmony export (immutable) */ __webpack_exports__["g"] = openByScheme;
+/* harmony export (immutable) */ __webpack_exports__["e"] = isSupportScheme;
 /* unused harmony export utoa */
 /* unused harmony export atou */
 /* harmony export (immutable) */ __webpack_exports__["b"] = getQQOrQzoneQueryData;
-/* harmony export (immutable) */ __webpack_exports__["d"] = loadJS;
-/* harmony export (immutable) */ __webpack_exports__["c"] = isMobile;
-/* unused harmony export getErrorFunc */
+/* harmony export (immutable) */ __webpack_exports__["f"] = loadJS;
+/* harmony export (immutable) */ __webpack_exports__["d"] = isMobile;
+/* harmony export (immutable) */ __webpack_exports__["c"] = isFunction;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_object_keys__ = __webpack_require__(132);
@@ -530,20 +498,15 @@ function concatURL(baseUrl, queryStrData) {
   return baseUrl + (queryStr ? '?' + queryStr : '');
 }
 
-function openByScheme(scheme, data, osName) {
+function openByScheme(scheme, data) {
   var completeSchema = data ? concatURL(scheme, data) : scheme;
   window.location.href = completeSchema;
-  // if (osName === OS.IOS) {
-  //   const iframe = document.createElement('iframe')
-  //   iframe.src = completeSchema
-  //   iframe.style.visibility = 'hidden'
-  //   document.body.appendChild(iframe)
-  //   setTimeout(() => {
-  //     iframe && iframe.parentNode && iframe.parentNode.removeChild(iframe)
-  //   }, 2000)
-  // } else {
-  //   window.location.href = completeSchema
-  // }
+}
+
+// scheme not support:  baidu app and browser, uc browser, wechat
+var SCHEME_NOT_SUPPORT = [__WEBPACK_IMPORTED_MODULE_2__constants__["b" /* Browsers */].BAIDU, __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* Browsers */].BAIDUBROWSER, __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* Browsers */].UC, __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* Browsers */].WECHAT];
+function isSupportScheme(browserName) {
+  return SCHEME_NOT_SUPPORT.indexOf(browserName) < 0;
 }
 
 function utoa(str) {
@@ -586,11 +549,42 @@ function isMobile(osName) {
   return osName === __WEBPACK_IMPORTED_MODULE_2__constants__["c" /* OS */].IOS || osName === __WEBPACK_IMPORTED_MODULE_2__constants__["c" /* OS */].ANDROID;
 }
 
-function getErrorFunc(msg) {
-  return function () {
-    throw new Error(msg);
-  };
+function isFunction(func) {
+  return Object.prototype.toString.call(func) === '[object Function]';
 }
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var anObject = __webpack_require__(14);
+var IE8_DOM_DEFINE = __webpack_require__(50);
+var toPrimitive = __webpack_require__(37);
+var dP = Object.defineProperty;
+
+exports.f = __webpack_require__(16) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+  anObject(O);
+  P = toPrimitive(P, true);
+  anObject(Attributes);
+  if (IE8_DOM_DEFINE) try {
+    return dP(O, P, Attributes);
+  } catch (e) { /* empty */ }
+  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
+  if ('value' in Attributes) O[P] = Attributes.value;
+  return O;
+};
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(15);
+module.exports = function (it) {
+  if (!isObject(it)) throw TypeError(it + ' is not an object!');
+  return it;
+};
+
 
 /***/ }),
 /* 15 */
@@ -615,7 +609,7 @@ module.exports = !__webpack_require__(20)(function () {
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(12);
+var dP = __webpack_require__(13);
 var createDesc = __webpack_require__(22);
 module.exports = __webpack_require__(16) ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
@@ -780,7 +774,7 @@ module.exports = function (key) {
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var def = __webpack_require__(12).f;
+var def = __webpack_require__(13).f;
 var has = __webpack_require__(18);
 var TAG = __webpack_require__(5)('toStringTag');
 
@@ -879,7 +873,7 @@ module.exports = function (it, S) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject = __webpack_require__(13);
+var anObject = __webpack_require__(14);
 var dPs = __webpack_require__(78);
 var enumBugKeys = __webpack_require__(42);
 var IE_PROTO = __webpack_require__(40)('IE_PROTO');
@@ -1019,7 +1013,7 @@ var global = __webpack_require__(4);
 var core = __webpack_require__(1);
 var LIBRARY = __webpack_require__(28);
 var wksExt = __webpack_require__(46);
-var defineProperty = __webpack_require__(12).f;
+var defineProperty = __webpack_require__(13).f;
 module.exports = function (name) {
   var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
@@ -1246,7 +1240,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // call something on iterator step with safe closing on error
-var anObject = __webpack_require__(13);
+var anObject = __webpack_require__(14);
 module.exports = function (iterator, fn, value, entries) {
   try {
     return entries ? fn(anObject(value)[0], value[1]) : fn(value);
@@ -1292,7 +1286,7 @@ module.exports = __webpack_require__(1).getIteratorMethod = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.3.20 SpeciesConstructor(O, defaultConstructor)
-var anObject = __webpack_require__(13);
+var anObject = __webpack_require__(14);
 var aFunction = __webpack_require__(29);
 var SPECIES = __webpack_require__(5)('species');
 module.exports = function (O, D) {
@@ -1409,7 +1403,7 @@ module.exports = function (exec) {
 /* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject = __webpack_require__(13);
+var anObject = __webpack_require__(14);
 var isObject = __webpack_require__(15);
 var newPromiseCapability = __webpack_require__(43);
 
@@ -1599,6 +1593,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__context__ = __webpack_require__(105);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__strategy__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__constants__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils__ = __webpack_require__(12);
+
 
 
 
@@ -1614,26 +1610,79 @@ var Share = function () {
 
     var browserInfo = new __WEBPACK_IMPORTED_MODULE_3_ohu_detect__["a" /* default */](navigator.userAgent);
     this.context = new __WEBPACK_IMPORTED_MODULE_4__context__["a" /* default */](shareData, browserInfo);
-    this.otherInstance = null;
+    this.dataset = 'share';
     this.strategy = new __WEBPACK_IMPORTED_MODULE_5__strategy__["a" /* default */](this.context);
     this.promise = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise___default.a.resolve();
+    this.mountPromise = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise___default.a.resolve();
     this.nativeInstance = this.strategy.exec(__WEBPACK_IMPORTED_MODULE_5__strategy__["a" /* default */].NATIVE); // only native method can be preset
   }
 
   __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(Share, [{
+    key: '_formatDataset',
+    value: function _formatDataset(dataset) {
+      var str = dataset.toLowerCase();
+      return str.replace(/(data-)?(.*)/, function (match, g1, g2) {
+        return g2.replace(/-(\w)/g, function (m, g) {
+          return g.toUpperCase();
+        });
+      });
+    }
+  }, {
+    key: 'on',
+    value: function on(event, success, error) {
+      if (event === 'share') {
+        if (Object(__WEBPACK_IMPORTED_MODULE_7__utils__["c" /* isFunction */])(success)) {
+          this.success = success;
+        } else {
+          throw Error('success should be function');
+        }
+        if (Object(__WEBPACK_IMPORTED_MODULE_7__utils__["c" /* isFunction */])(error)) {
+          this.error = error;
+        } else {
+          throw Error('error should be function');
+        }
+      }
+    }
+  }, {
+    key: 'mount',
+    value: function mount() {
+      var _this = this;
+
+      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { el: null },
+          _ref$el = _ref.el,
+          el = _ref$el === undefined ? null : _ref$el,
+          dataset = _ref.dataset;
+
+      if (dataset) {
+        this.dataset = this._formatDataset(dataset);
+      }
+      var els = document.querySelectorAll('[' + (dataset ? dataset.indexOf('data-') > -1 ? dataset : 'data-' + dataset : 'data-' + this.dataset) + ']', el);
+      els.forEach(function (el) {
+        var whichApp = el.dataset[_this.dataset];
+        el.addEventListener('click', function () {
+          _this.to(whichApp).then(function (support) {
+            _this.success && _this.success({ support: support, app: whichApp });
+            return support;
+          }).catch(function (err) {
+            _this.error && _this.error(err);
+          });
+        }, false);
+      });
+    }
+  }, {
     key: 'to',
     value: function to(app) {
-      var _this = this;
+      var _this2 = this;
 
       var finalInstance = null;
       return this.promise.then(function () {
-        return _this.nativeInstance;
-      }).then(function (_ref) {
-        var isSupport = _ref.isSupport,
-            instance = _ref.instance;
+        return _this2.nativeInstance;
+      }).then(function (_ref2) {
+        var isSupport = _ref2.isSupport,
+            instance = _ref2.instance;
 
         if (!instance || instance && !isSupport || instance && !instance.isSupport(app)) {
-          var otherInstance = _this.strategy.execByApp(app);
+          var otherInstance = _this2.strategy.execByApp(app);
           if (otherInstance) finalInstance = otherInstance;
         } else {
           finalInstance = instance;
@@ -1713,8 +1762,8 @@ module.exports = function (Constructor, NAME, next) {
 /* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(12);
-var anObject = __webpack_require__(13);
+var dP = __webpack_require__(13);
+var anObject = __webpack_require__(14);
 var getKeys = __webpack_require__(24);
 
 module.exports = __webpack_require__(16) ? Object.defineProperties : function defineProperties(O, Properties) {
@@ -2125,7 +2174,7 @@ module.exports = function (it, Constructor, name, forbiddenField) {
 var ctx = __webpack_require__(19);
 var call = __webpack_require__(58);
 var isArrayIter = __webpack_require__(59);
-var anObject = __webpack_require__(13);
+var anObject = __webpack_require__(14);
 var toLength = __webpack_require__(39);
 var getIterFn = __webpack_require__(60);
 var BREAK = {};
@@ -2266,7 +2315,7 @@ module.exports = function (target, src, safe) {
 
 var global = __webpack_require__(4);
 var core = __webpack_require__(1);
-var dP = __webpack_require__(12);
+var dP = __webpack_require__(13);
 var DESCRIPTORS = __webpack_require__(16);
 var SPECIES = __webpack_require__(5)('species');
 
@@ -2342,7 +2391,7 @@ module.exports = function defineProperty(it, key, desc) {
 
 var $export = __webpack_require__(6);
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !__webpack_require__(16), 'Object', { defineProperty: __webpack_require__(12).f });
+$export($export.S + $export.F * !__webpack_require__(16), 'Object', { defineProperty: __webpack_require__(13).f });
 
 
 /***/ }),
@@ -2571,7 +2620,7 @@ $export($export.S + $export.F * !__webpack_require__(65)(function (iter) { Array
 
 "use strict";
 
-var $defineProperty = __webpack_require__(12);
+var $defineProperty = __webpack_require__(13);
 var createDesc = __webpack_require__(22);
 
 module.exports = function (object, index, value) {
@@ -2958,7 +3007,7 @@ var urls = (_urls = {}, __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_define
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__invoker__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__constants__ = __webpack_require__(0);
 
@@ -3087,7 +3136,7 @@ var wksExt = __webpack_require__(46);
 var wksDefine = __webpack_require__(47);
 var enumKeys = __webpack_require__(120);
 var isArray = __webpack_require__(121);
-var anObject = __webpack_require__(13);
+var anObject = __webpack_require__(14);
 var isObject = __webpack_require__(15);
 var toIObject = __webpack_require__(21);
 var toPrimitive = __webpack_require__(37);
@@ -3095,7 +3144,7 @@ var createDesc = __webpack_require__(22);
 var _create = __webpack_require__(38);
 var gOPNExt = __webpack_require__(122);
 var $GOPD = __webpack_require__(71);
-var $DP = __webpack_require__(12);
+var $DP = __webpack_require__(13);
 var $keys = __webpack_require__(24);
 var gOPD = $GOPD.f;
 var dP = $DP.f;
@@ -3313,7 +3362,7 @@ setToStringTag(global.JSON, 'JSON', true);
 var META = __webpack_require__(30)('meta');
 var isObject = __webpack_require__(15);
 var has = __webpack_require__(18);
-var setDesc = __webpack_require__(12).f;
+var setDesc = __webpack_require__(13).f;
 var id = 0;
 var isExtensible = Object.isExtensible || function () {
   return true;
@@ -3466,7 +3515,7 @@ $export($export.S, 'Object', { setPrototypeOf: __webpack_require__(128).set });
 // Works with __proto__ only. Old v8 can't work with null proto objects.
 /* eslint-disable no-proto */
 var isObject = __webpack_require__(15);
-var anObject = __webpack_require__(13);
+var anObject = __webpack_require__(14);
 var check = function (O, proto) {
   anObject(O);
   if (!isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
@@ -3560,7 +3609,7 @@ __webpack_require__(68)('keys', function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__invoker__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__constants__ = __webpack_require__(0);
 
@@ -3587,7 +3636,7 @@ var Weibo = function (_Invoker) {
   __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(Weibo, [{
     key: 'preset',
     value: function preset() {
-      var baseUrl = 'http://service.weibo.com/share/' + ((Object(__WEBPACK_IMPORTED_MODULE_5__utils__["c" /* isMobile */])(this.context.osName) ? 'mobile' : 'share') + '.php');
+      var baseUrl = 'http://service.weibo.com/share/' + ((Object(__WEBPACK_IMPORTED_MODULE_5__utils__["d" /* isMobile */])(this.context.osName) ? 'mobile' : 'share') + '.php');
       this.completeUrl = Object(__WEBPACK_IMPORTED_MODULE_5__utils__["a" /* concatURL */])(baseUrl, {
         title: this.shareData.title,
         url: this.shareData.link,
@@ -3629,7 +3678,7 @@ var Weibo = function (_Invoker) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__invoker__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__constants__ = __webpack_require__(0);
 
@@ -3837,7 +3886,7 @@ UC.APPMAP = (_UC$APPMAP = {}, __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__invoker__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__constants__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils__ = __webpack_require__(12);
 
 
 
@@ -3872,7 +3921,7 @@ var QQBrowser = function (_Invoker) {
     key: 'preload',
     value: function preload() {
       if (typeof browser === 'undefined') {
-        this.loader = Object(__WEBPACK_IMPORTED_MODULE_8__utils__["d" /* loadJS */])('//jsapi.qq.com/get?api=app.share');
+        this.loader = Object(__WEBPACK_IMPORTED_MODULE_8__utils__["f" /* loadJS */])('//jsapi.qq.com/get?api=app.share');
       }
       return this.loader;
     }
@@ -3959,7 +4008,7 @@ QQBrowser.APPMAP = (_QQBrowser$APPMAP = {}, __WEBPACK_IMPORTED_MODULE_0_babel_ru
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__invoker__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__constants__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__utils__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__utils__ = __webpack_require__(12);
 
 
 
@@ -4005,7 +4054,7 @@ var BaiduBrowser = function (_Invoker) {
 
       if (__WEBPACK_IMPORTED_MODULE_8__constants__["c" /* OS */].IOS === this.context.osName) {
         this.finallyInvoke = function () {
-          return Object(__WEBPACK_IMPORTED_MODULE_9__utils__["e" /* openByScheme */])('baidubrowserapp://bd_utils', {
+          return Object(__WEBPACK_IMPORTED_MODULE_9__utils__["g" /* openByScheme */])('baidubrowserapp://bd_utils', {
             action: 'shareWebPage',
             params: encodeURIComponent(_this2.actualData)
           });
@@ -4171,7 +4220,7 @@ var Baidu = function (_Invoker) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__constants__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__invoker__ = __webpack_require__(10);
 
@@ -4209,7 +4258,7 @@ var WeChat = function (_Invoker) {
     value: function preload() {
       var _this2 = this;
 
-      this.loader = Object(__WEBPACK_IMPORTED_MODULE_5__utils__["d" /* loadJS */])('//res.wx.qq.com/open/js/jweixin-1.2.0.js').then(function () {
+      this.loader = Object(__WEBPACK_IMPORTED_MODULE_5__utils__["f" /* loadJS */])('//res.wx.qq.com/open/js/jweixin-1.2.0.js').then(function () {
         wx.config({
           debug: _this2.wechatConfig.debug || false,
           appId: _this2.wechatConfig.appId,
@@ -4394,7 +4443,7 @@ var schemes = (_schemes = {}, __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__constants__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__invoker__ = __webpack_require__(10);
 
 
@@ -4423,7 +4472,7 @@ var Qzone = function (_Invoker) {
   __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_createClass___default()(Qzone, [{
     key: 'preset',
     value: function preset() {
-      if (Qzone.strategy[this.context.osName] !== undefined) {
+      if (Qzone.strategy[this.context.osName] !== undefined && Object(__WEBPACK_IMPORTED_MODULE_8__utils__["e" /* isSupportScheme */])(this.context.browserName)) {
         this.strategy = Qzone.strategy[this.context.osName];
         if (this.strategy) {
           var completeUrl = Object(__WEBPACK_IMPORTED_MODULE_8__utils__["a" /* concatURL */])(this.strategy.scheme, __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_object_assign___default()({}, this.strategy.query, Object(__WEBPACK_IMPORTED_MODULE_8__utils__["b" /* getQQOrQzoneQueryData */])(this.context.shareData)));
@@ -4484,7 +4533,7 @@ Qzone.strategy = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_definePropert
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__invoker__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__constants__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__utils__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__utils__ = __webpack_require__(12);
 
 
 
@@ -4514,7 +4563,7 @@ var QQ = function (_Invoker) {
   __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_createClass___default()(QQ, [{
     key: 'preset',
     value: function preset() {
-      if (QQ.strategy[this.context.osName] !== undefined) {
+      if (QQ.strategy[this.context.osName] !== undefined && Object(__WEBPACK_IMPORTED_MODULE_9__utils__["e" /* isSupportScheme */])(this.context.browserName)) {
         this.strategy = QQ.strategy[this.context.osName];
         if (this.strategy) {
           var completeUrl = Object(__WEBPACK_IMPORTED_MODULE_9__utils__["a" /* concatURL */])(this.strategy.scheme, __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_object_assign___default()({}, this.strategy.query, Object(__WEBPACK_IMPORTED_MODULE_9__utils__["b" /* getQQOrQzoneQueryData */])(this.context.shareData)));

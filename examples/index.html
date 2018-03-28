@@ -9,11 +9,11 @@
   <script>eruda.init();</script>
 </head>
 <body>
-  <button id="shareToQQ">ShareToQQ</button>
-  <button id="shareToWeibo">ShareToWeibo</button>
-  <button id="shareToQZone">ShareToQZone</button>
-  <button id="shareToWeixin">shareToWechat</button>
-  <button id="shareToMoments">shareToMoments</button>
+  <button data-share="qq" id="shareToQQ">ShareToQQ</button>
+  <button data-share="weibo" id="shareToWeibo">ShareToWeibo</button>
+  <button data-share="qzone" id="shareToQZone">ShareToQZone</button>
+  <button data-share="wechat" id="shareToWeixin">shareToWechat</button>
+  <button  id="shareToMoments">shareToMoments</button>
   <a href="mqqapi://share/to_qzone?src_type=isqqBrowser&version=1&file_type=news&req_type=1&share_id=924053302&url=aHR0cHM6Ly9naXRodWIuY29tL2plZmZ3Y3g=&title=566A5Y2V5L6L5a2Q&description=566A5Y2V55qE5pGY6KaB5ZKM5o+P6L+w&previewimageUrl=aHR0cHM6Ly9hdmF0YXJzMS5naXRodWJ1c2VyY29udGVudC5jb20vdS8xNDA3Mzc3NT9zPTQ2MCZ2PTQ=&image_url=aHR0cHM6Ly9hdmF0YXJzMS5naXRodWJ1c2VyY29udGVudC5jb20vdS8xNDA3Mzc3NT9zPTQ2MCZ2PTQ=">
     schema test
   </a>
@@ -25,12 +25,6 @@
       var scheme = document.getElementById('scheme')
       function openByScheme (url) {
         window.location.href = url
-        // var iframe = document.createElement('iframe')
-        // iframe.style.visibility = 'hidden'
-        // document.body.appendChild(iframe)
-        // setTimeout(() => {
-        //   iframe && iframe.parentNode && iframe.parentNode.removeChild(iframe)
-        // }, 2000)
       }
       document.getElementById('openApp').addEventListener('click', function() {
         openByScheme(scheme.value)
@@ -48,74 +42,18 @@
           signature: ''
         }
       })
-      var SUPPORT = ohu.SUPPORT
-      console.log(share.context)
+      share.on('share', function({ support, app }) {
+        console.log(support, app)
+      }, function (err) {
+        console.log(err)
+      })
+      share.mount()
       var Apps = ohu.Apps
-      document.getElementById('shareToWeibo').addEventListener('click', function() {
-        share.to(Apps.WEIBO)
-        .then(function (support) {
-          console.log(support)
-          if (!support.isSupport) {
-            console.log('无法支持微博')
-          }
-        }).catch((err) => {
-          console.log(err)
-        })
-      }, false)
-      document.getElementById('shareToQQ').addEventListener('click', function() {
-        share.to(Apps.QQ)
-        .then(function (support) {
-          console.log(support)
-          if (!support.isSupport) {
-            console.log('无法支持QQ')
-          } else {
-            if (support.supportType === SUPPORT.LEVEL4) {
-              console.log('微信浏览器，只支持自定义分享')
-            }
-          }
-        }).catch((err) => {
-          console.log(err)
-        })
-      }, false)
-      document.getElementById('shareToQZone').addEventListener('click', function() {
-        share.to(Apps.QZONE)
-        .then(function (support) {
-          console.log(support)
-          if (!support.isSupport) {
-            console.log('无法支持Qzone')
-          } else {
-            if (support.supportType === SUPPORT.LEVEL4) {
-              console.log('微信浏览器，只支持自定义分享')
-            }
-          }
-        }).catch((err) => {
-          console.log(err)
-        })
-      }, false)
-      document.getElementById('shareToWeixin').addEventListener('click', function() {
-        share.to(Apps.WECHAT)
-        .then(function (support) {
-          console.log(support)
-          if (!support.isSupport) {
-            console.log('无法支持Wechat')
-          } else {
-            if (support.supportType === SUPPORT.LEVEL4) {
-              console.log('微信浏览器，只支持自定义分享')
-            }
-          }
-        }).catch((err) => {
-          console.log(err)
-        })
-      }, false)
       document.getElementById('shareToMoments').addEventListener('click', function() {
-        share.to(Apps.MOMENTS).then(function (support) {
-          console.log(support)
-          if (!support.isSupport) {
-            console.log('无法支持wechat moments')
-          } else {
-            if (support.supportType === SUPPORT.LEVEL4) {
-              console.log('微信浏览器，只支持自定义分享')
-            }
+        share.to(Apps.MOMENTS)
+        .then(function ({ isSupport, supportType }) {
+          if (!isSupport) {
+            console.log('无法支持wechat')
           }
         }).catch((err) => {
           console.log(err)

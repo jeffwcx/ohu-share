@@ -1,7 +1,7 @@
 
 import Invoker from '../invoker'
 import { OS, SUPPORT } from '../constants'
-import { getQQOrQzoneQueryData, concatURL } from '../utils'
+import { getQQOrQzoneQueryData, concatURL, isSupportScheme } from '../utils'
 
 export default class QQ extends Invoker {
   constructor (context) {
@@ -27,7 +27,8 @@ export default class QQ extends Invoker {
     }
   }
   preset () {
-    if (QQ.strategy[this.context.osName] !== undefined) {
+    if (QQ.strategy[this.context.osName] !== undefined &&
+      isSupportScheme(this.context.browserName)) {
       this.strategy = QQ.strategy[this.context.osName]
       if (this.strategy) {
         const completeUrl = concatURL(this.strategy.scheme,

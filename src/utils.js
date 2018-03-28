@@ -1,4 +1,4 @@
-import { OS } from './constants'
+import { OS, Browsers } from './constants'
 
 export function concatURL (baseUrl, queryStrData, encode = false) {
   const queryStr = Object.keys(queryStrData).map(i => {
@@ -11,20 +11,15 @@ export function concatURL (baseUrl, queryStrData, encode = false) {
   return baseUrl + (queryStr ? `?${queryStr}` : '')
 }
 
-export function openByScheme (scheme, data, osName) {
+export function openByScheme (scheme, data) {
   const completeSchema = data ? concatURL(scheme, data) : scheme
   window.location.href = completeSchema
-  // if (osName === OS.IOS) {
-  //   const iframe = document.createElement('iframe')
-  //   iframe.src = completeSchema
-  //   iframe.style.visibility = 'hidden'
-  //   document.body.appendChild(iframe)
-  //   setTimeout(() => {
-  //     iframe && iframe.parentNode && iframe.parentNode.removeChild(iframe)
-  //   }, 2000)
-  // } else {
-  //   window.location.href = completeSchema
-  // }
+}
+
+// scheme not support:  baidu app and browser, uc browser, wechat
+const SCHEME_NOT_SUPPORT = [Browsers.BAIDU, Browsers.BAIDUBROWSER, Browsers.UC, Browsers.WECHAT]
+export function isSupportScheme (browserName) {
+  return SCHEME_NOT_SUPPORT.indexOf(browserName) < 0
 }
 
 export function utoa (str) {
@@ -67,6 +62,6 @@ export function isMobile (osName) {
   return osName === OS.IOS || osName === OS.ANDROID
 }
 
-export function getErrorFunc (msg) {
-  return function () { throw new Error(msg) }
+export function isFunction (func) {
+  return Object.prototype.toString.call(func) === '[object Function]'
 }
