@@ -1657,7 +1657,7 @@ var Share = function () {
         this.dataset = this._formatDataset(dataset);
       }
       var els = document.querySelectorAll('[' + (dataset ? dataset.indexOf('data-') > -1 ? dataset : 'data-' + dataset : 'data-' + this.dataset) + ']', el);
-      els.forEach(function (el) {
+      Array.prototype.forEach.call(els, function (el) {
         var whichApp = el.dataset[_this.dataset];
         el.addEventListener('click', function () {
           _this.to(whichApp).then(function (support) {
@@ -3814,12 +3814,12 @@ var UC = function (_Invoker) {
     value: function preset() {
       var _this2 = this;
 
-      if (typeof ucweb !== 'undefined') {
+      if (__WEBPACK_IMPORTED_MODULE_7__constants__["c" /* OS */].ANDROID === this.context.osName) {
         this.finallyInvoke = function () {
           ucweb.startRequest('shell.page_share', _this2.actualData);
         };
         return true;
-      } else if (typeof ucbrowser !== 'undefined') {
+      } else if (__WEBPACK_IMPORTED_MODULE_7__constants__["c" /* OS */].IOS === this.context.osName) {
         this.finallyInvoke = function () {
           var _ucbrowser;
 

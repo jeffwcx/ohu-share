@@ -44,7 +44,7 @@ export default class Share {
         ? dataset
         : 'data-' + dataset
       : 'data-' + this.dataset}]`, el)
-    els.forEach((el) => {
+    Array.prototype.forEach.call(els, (el) => {
       const whichApp = el.dataset[this.dataset]
       el.addEventListener('click', () => {
         this.to(whichApp).then((support) => {

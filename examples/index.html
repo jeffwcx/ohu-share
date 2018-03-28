@@ -42,8 +42,9 @@
           signature: ''
         }
       })
-      share.on('share', function({ support, app }) {
-        console.log(support, app)
+      console.log(share.context)
+      share.on('share', function(data) {
+        console.log(data.support, data.app)
       }, function (err) {
         console.log(err)
       })
@@ -51,11 +52,11 @@
       var Apps = ohu.Apps
       document.getElementById('shareToMoments').addEventListener('click', function() {
         share.to(Apps.MOMENTS)
-        .then(function ({ isSupport, supportType }) {
-          if (!isSupport) {
+        .then(function (support) {
+          if (!support.isSupport) {
             console.log('无法支持wechat')
           }
-        }).catch((err) => {
+        }).catch(function (err) {
           console.log(err)
         })
       }, false)

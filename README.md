@@ -170,5 +170,11 @@ share.to(Apps.QQ)
 }
 ```
 
+## 一些你需要了解的坑
+
+1. UC ios浏览器上分享，其自有变量`ucbrowser`在`DOMContentLoaded`或者是`load`事件触发时为`undefined`，据我测算大概在50ms后`ucbrowser`不为`undefined`
+
+2. 百度浏览器，百度APP，UC浏览器，微信内置浏览器均不支持启动外部协议（location.href不起作用）
+
 
 

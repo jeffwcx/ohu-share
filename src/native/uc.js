@@ -55,12 +55,12 @@ export default class UC extends Invoker {
     }
   }
   preset () {
-    if (typeof (ucweb) !== 'undefined') {
+    if (OS.ANDROID === this.context.osName) {
       this.finallyInvoke = () => {
         ucweb.startRequest('shell.page_share', this.actualData)
       }
       return true
-    } else if (typeof (ucbrowser) !== 'undefined') {
+    } else if (OS.IOS === this.context.osName) {
       this.finallyInvoke = () => {
         ucbrowser.web_share(...this.actualData)
       }
