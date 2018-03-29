@@ -4037,14 +4037,6 @@ var BaiduBrowser = function (_Invoker) {
     var _this = __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_possibleConstructorReturn___default()(this, (BaiduBrowser.__proto__ || __WEBPACK_IMPORTED_MODULE_2_babel_runtime_core_js_object_get_prototype_of___default()(BaiduBrowser)).call(this, context));
 
     _this.supportType = __WEBPACK_IMPORTED_MODULE_8__constants__["d" /* SUPPORT */].LEVEL2;
-    var shareData = _this.shareData;
-    _this._rawData = {
-      title: shareData.title,
-      context: shareData.desc,
-      landurl: shareData.link,
-      imageurl: shareData.icon,
-      shareSource: '@' + shareData.from
-    };
     return _this;
   }
 
@@ -4054,14 +4046,35 @@ var BaiduBrowser = function (_Invoker) {
       var _this2 = this;
 
       if (__WEBPACK_IMPORTED_MODULE_8__constants__["c" /* OS */].IOS === this.context.osName) {
+        if (!this._rawData) {
+          var shareData = this.shareData;
+          this._rawData = {
+            title: shareData.title,
+            context: shareData.desc,
+            landurl: shareData.link,
+            imageurl: shareData.icon,
+            mediaType: 0,
+            share_type: 'webpage'
+          };
+        }
         this.finallyInvoke = function () {
           return Object(__WEBPACK_IMPORTED_MODULE_9__utils__["g" /* openByScheme */])('baidubrowserapp://bd_utils', {
             action: 'shareWebPage',
-            params: encodeURIComponent(_this2.actualData)
+            params: encodeURIComponent(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_json_stringify___default()(_this2.actualData))
           });
         };
         return true;
       } else if (typeof _flyflowNative !== 'undefined') {
+        if (!this._rawData) {
+          var _shareData = this.shareData;
+          this._rawData = {
+            title: _shareData.title,
+            context: _shareData.desc,
+            landurl: _shareData.link,
+            imageurl: _shareData.icon,
+            shareSource: _shareData.from
+          };
+        }
         this.finallyInvoke = function () {
           return _flyflowNative.exec('bd_utils', 'shareWebPage', __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_json_stringify___default()(_this2.actualData), '');
         };
