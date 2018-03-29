@@ -1,5 +1,5 @@
 /*!
- * ohu-share v1.0.0
+ * ohu-share v1.0.1
  * author jeffwcx
  */
 (function webpackUniversalModuleDefinition(root, factory) {
