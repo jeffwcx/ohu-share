@@ -3,6 +3,10 @@
 跨浏览器的分享插件，可优雅降级
 
 ## TODO
++ 异步加载配置（微信可能有这个需求）
++ isSupport定义，让降级处理更加简单，优雅
++ 优化promise处理
++ 定制分享策略
 + vue组件
 
 ## 分享策略
@@ -111,6 +115,7 @@ share.to(Apps.QQ)
 ### 常量
 
 + 浏览器常量
+
 ```javascript
 {
   QQBROWSER: 'qqbrowser',
