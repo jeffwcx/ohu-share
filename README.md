@@ -287,6 +287,12 @@ or
   LEVEL7: 6
 }
 ```
+
+## Examples
+
+1. ![简单例子](https://jeffwcx.github.io/ohu-share/examples/)
+2. ![复杂例子](https://jeffwcx.github.io/ohu-share/examples/user-define.html)
+
 ## TODO
 + 使用async/await api
 + 定制分享策略
