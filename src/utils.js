@@ -62,6 +62,31 @@ export function isMobile (osName) {
   return osName === OS.IOS || osName === OS.ANDROID
 }
 
+export function getType (obj) {
+  return Object.prototype.toString.call(obj)
+    .match(/\[\w+\s(\w+)\]/)[1]
+    .toLowerCase()
+}
+
 export function isFunction (func) {
-  return Object.prototype.toString.call(func) === '[object Function]'
+  return getType(func) === 'function'
+}
+
+export function isPromise (promise) {
+  return getType(promise) === 'promise'
+}
+
+export function isObject (obj) {
+  return getType(obj) === 'object'
+}
+
+export function isString (str) {
+  return getType(str) === 'string'
+}
+
+export function formatDataset (dataset, noLodash = true) {
+  let str = dataset.toLowerCase()
+  return str.replace(/(data-)?(.*)/, function (match, g1, g2) {
+    return noLodash ? g2.replace(/-(\w)/g, function (m, g) { return g.toUpperCase() }) : ('data-' + g2)
+  })
 }

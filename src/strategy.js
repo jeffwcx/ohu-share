@@ -19,9 +19,7 @@ export default class Strategy {
           }
         })
       }
-      return Promise.resolve().then(() => {
-        return {}
-      })
+      return null
     },
     [Strategy.SCHEME]: function getSchemeShare (context, app) {
       const ShareClass = schemeList[app]

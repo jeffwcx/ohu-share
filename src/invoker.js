@@ -18,7 +18,7 @@ export default class Invoker {
    * when you share something
    * you may need to set config before invoke
    */
-  preset () {}
+  preset () { return false }
   isSupport (app) { return false }
   invoke () {}
   _openScheme (scheme) {
