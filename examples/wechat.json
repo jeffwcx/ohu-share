@@ -1,0 +1,6 @@
+{
+  "appId": "appId",
+  "timestamp": "timestamp",
+  "nonceStr": "nonceStr",
+  "signature": "signature"
+}

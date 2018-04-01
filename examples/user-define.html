@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Share to All kinds of App - User Defined</title>
+  <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+</head>
+<body>
+  <div class="shareView">
+    <button data-share-to="QQ" id="shareToQQ">ShareToQQ</button>
+    <button data-share-to="webo" id="shareToWeibo">ShareToWeibo</button>
+    <button data-share-to="qzone" id="shareToQZone">ShareToQZone</button>
+    <button data-share-to="wechat" id="shareToWeixin">shareToWechat</button>
+    <button data-share-to="wechatFriend">shareToMoments</button>
+  </div>
+  <script src="../dist/ohu-share.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var Apps = ohu.Apps
+      var SUPPORT = ohu.SUPPORT
+      var share = new ohu.Share({
+        title: '简单例子简单例子简单例子简单例子简单例子简单例子',
+        desc: '简单的摘要和描述简单的摘要和描述简单的摘要和描述简单的摘要和描述简单的摘要和描述',
+        icon: 'https://avatars0.githubusercontent.com/u/14073775?s=40&u=db665a9c327b60d8e4f097ee949fa5f77187e31a&v=4',
+        link: 'https://github.com/jeffwcx',
+        from: 'github'
+      }, {
+        appMap: {
+          'webo': Apps.WEIBO
+        }
+      })
+      share.setShareData(function (shareData) {
+        return fetch('./wechat.json')
+        .then((data) => {
+          return Promise.resolve({
+            then: function (resolve, reject) {
+              setTimeout(() => {
+                resolve(data.json())
+              }, 2000)
+            }
+          })
+        })
+        .then((data) => {
+          shareData.wechat = data
+        })
+      })
+      share.setAppMap('wechatFriend',  Apps.MOMENTS)
+      share.setSupport(function (supportType) {
+        // 自定义有问题也做降级处理
+        return !(SUPPORT.LEVEL3 === supportType
+          || SUPPORT.LEVEL4 === supportType
+          || SUPPORT.LEVEL7 === supportType)
+      })
+      share.to(Apps.QQ)
+      .then(function (support) {
+        console.log(share.context.shareData)
+        console.log(support.isSupport, support.supportType)
+      })
+      share.on('share', function(data) {
+        console.log(data.support, data.app, data.context)
+      }, function (err) {
+        console.log(err)
+      })
+      share.mount({
+        dataset: 'share-to',
+        appMap: {
+          QQ: Apps.QQ
+        }
+      })
+    })
+
+    
+  </script>
+</body>
+</html>

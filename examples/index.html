@@ -13,22 +13,10 @@
   <button data-share="weibo" id="shareToWeibo">ShareToWeibo</button>
   <button data-share="qzone" id="shareToQZone">ShareToQZone</button>
   <button data-share="wechat" id="shareToWeixin">shareToWechat</button>
-  <button  id="shareToMoments">shareToMoments</button>
-  <a href="mqqapi://share/to_qzone?src_type=isqqBrowser&version=1&file_type=news&req_type=1&share_id=924053302&url=aHR0cHM6Ly9naXRodWIuY29tL2plZmZ3Y3g=&title=566A5Y2V5L6L5a2Q&description=566A5Y2V55qE5pGY6KaB5ZKM5o+P6L+w&previewimageUrl=aHR0cHM6Ly9hdmF0YXJzMS5naXRodWJ1c2VyY29udGVudC5jb20vdS8xNDA3Mzc3NT9zPTQ2MCZ2PTQ=&image_url=aHR0cHM6Ly9hdmF0YXJzMS5naXRodWJ1c2VyY29udGVudC5jb20vdS8xNDA3Mzc3NT9zPTQ2MCZ2PTQ=">
-    schema test
-  </a>
-  <button id="openApp">openApp</button>
-  <input id="scheme" type="text" />
+  <button data-share="moments">shareToMoments</button>
   <script src="../dist/ohu-share.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      var scheme = document.getElementById('scheme')
-      function openByScheme (url) {
-        window.location.href = url
-      }
-      document.getElementById('openApp').addEventListener('click', function() {
-        openByScheme(scheme.value)
-      })
       var share = new ohu.Share({
         title: '简单例子简单例子简单例子简单例子简单例子简单例子',
         desc: '简单的摘要和描述简单的摘要和描述简单的摘要和描述简单的摘要和描述简单的摘要和描述',
@@ -42,24 +30,12 @@
           signature: ''
         }
       })
-      console.log(share.context)
       share.on('share', function(data) {
-        console.log(data.support, data.app)
+        console.log(data.support, data.app, data.context)
       }, function (err) {
         console.log(err)
       })
       share.mount()
-      var Apps = ohu.Apps
-      document.getElementById('shareToMoments').addEventListener('click', function() {
-        share.to(Apps.MOMENTS)
-        .then(function (support) {
-          if (!support.isSupport) {
-            console.log('无法支持wechat')
-          }
-        }).catch(function (err) {
-          console.log(err)
-        })
-      }, false)
     })
 
     
