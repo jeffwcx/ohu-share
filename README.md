@@ -2,13 +2,6 @@
 
 跨浏览器的分享插件，可优雅降级
 
-## TODO
-+ 异步加载配置（微信可能有这个需求）
-+ isSupport定义，让降级处理更加简单，优雅
-+ 优化promise处理
-+ 定制分享策略
-+ vue组件
-
 ## 分享策略
 
 该分享插件秉持稳定，可靠的特点，可在PC端和移动端分别进行分享，移动端如果目标分享对象支持原生调用分享，那就进行原生分享，如果不支持，使用URL分享；PC端则一贯使用URL分享。
@@ -27,7 +20,7 @@
 
 ✅ 微博
 
-**原生浏览器支持列表**
+**浏览器原生支持列表**
 
 ✅ QQ浏览器 
 
@@ -43,11 +36,6 @@
 
 ❌ QQ内置浏览器（待支持）
 
-## 兼容性
-
-浏览器： IE9 ⤴️ 及主流浏览器
-
-系统： iOS 8+
 
 ## 引入
 
@@ -57,11 +45,20 @@ npm i -S ohu-share
 ```javascript
 import { Share } from 'ohu-share'
 ```
+or
+```html
+<script src="https://unpkg.com/ohu-share@1.0.1/dist/ohu-share.min.js"></script>
+<script>
+  var share = new ohu.Share()
+</script>
+```
 
 ## API
 
-### new Share()
-初始化
+### new Share(shareData, config)
+
+初始化分享，主要是传入分享数据配置，及插件本身的配置
+
 ```javascript
 const share = new Share({
   title: '简单例子',
@@ -69,16 +66,20 @@ const share = new Share({
   icon: '',
   link: 'https://github.com/jeffwcx',
   from: 'github',
-  wechat: { // option
+  wechat: { // option，未选定配置，通过share.setShareData可异步加载
     appId: '',
     timestamp: '',
     nonceStr: '',
     signature: ''
   }
+}, {
+  dataset: '', // 可查看share.mount API
+  appMap: {}, // 可查看share.mount API
+  isSupport: function (supportType) {} // 可查看share.setSupport API
 })
 ```
 
-### share.to()
+### share.to(Apps.MOMENTS)
 
 单独APP分享接口
 
@@ -86,15 +87,16 @@ const share = new Share({
 import { Apps } from 'ohu-share'
 
 share.to(Apps.QQ)
-  .then(({ isSupport, supportType }) => {
-    // 可根据不同的支持类型进行降级处理
+  .then(({ isSupport, supportType, context }) => {
+    // 根据以上变量自由进行降级处理
   })
   .catch((err) => {
     // 处理错误
   })
 ```
 
-### share.on(), share.mount()
+### share.on('share', successHandler, errorHandler)
+### share.mount(), share.mount({ dataset, appMap, el})
 
 多个元素分享
 
@@ -102,19 +104,101 @@ share.to(Apps.QQ)
 <button data-share="qq">share to QQ</button>
 <button data-share="qzone">share to QZone</button>
 <script>
-  share.on('share', function success (app, { isSupport, supportType }) {
+  share.on('share', function success (app, support, context) {
+    // support有两个参数： isSupport, supportType
     // 可根据不同的APP分别进行处理
   }, function error (err) {
     // 处理错误
   })
   // 默认的dataset是‘data-share’
   share.mount()
+  share.mount({
+    el: parentNode,
+    appMap: {
+      // 自定义分享的APP的名字，这里我们将wechatFriend对应到Apps.MOMENTS
+      // 所以我们可以通过`data-share="wechatFriend"`分享到微信朋友圈
+      'wechatFriend': Apps.MOMENTS
+    },
+    // 更改分享的dataset属性名
+    // 设置为'share-to'之后，我们可以通过`<button data-share-to="qq"></button>`分享到qq
+    dataset: 'share-to'
+  })
 </script>
+```
+
+### share.setShareData(modifyShareDataFunc)
+
+设置分享数据
+
+```javascript
+// 可返回Promise，可用于动态加载Share数据（例如微信）
+share.setShareData(function (shareData) {
+  return fetch('wechat/api')
+  .then((data) => {
+    return Promise.resolve({
+      then: function (resolve, reject) {
+        return data.json()
+      }
+    })
+  })
+  .then((data) => {
+    shareData.wechat = data
+  })
+})
+
+// 直接设置
+share.setShareData(function (shareData) {
+  shareData.wechat = {
+    appId: appId,
+    timestamp: timestamp,
+    nonceStr: nonceStr,
+    signature: signature
+  }
+  return config
+})
+```
+
+### share.setSupport(func)
+
+定制返回的结果isSupport，以下为默认函数，你可查看下文的SUPPORT常量来决定你要如何定制函数
+
+```javascript
+// 定制isSupport属性
+share.setSupport(function (supportType) {
+  return !(SUPPORT.LEVEL4 === supportType ||
+    SUPPORT.LEVEL7 === supportType)
+})
+```
+
+### share.setAppMap(appMap), share.setAppMap(newAppValue, Apps.MOMENTS)
+```javascript
+share.setAppMap({
+  'wechatFriend': Apps.MOMENTS,
+  'timeline': Apps.MOMENTS, // 可重复设置
+  'webo': Apps.WEIBO
+})
+
+share.setAppMap('QQ', Apps.QQ)
+
 ```
 
 ### 常量
 
 + 浏览器常量
+
+```javascript
+import { Browsers } from 'ohu-share'
+
+Browsers.UC // 'uc'
+```
+or
+
+```html
+<script>
+  var Browsers = ohu.Browsers
+  Browsers.UC // 'uc'
+</script>
+```
 
 ```javascript
 {
@@ -132,6 +216,20 @@ share.to(Apps.QQ)
 + APP名称常量
 
 ```javascript
+import { Apps } from 'ohu-share'
+
+Apps.WECHAT // 'wechat'
+```
+or
+
+```html
+<script>
+  var Apps = ohu.Apps
+  Apps.WECHAT // 'wechat'
+</script>
+```
+
+```javascript
 {
   WECHAT: 'wechat',
   MOMENTS: 'moments',
@@ -141,6 +239,21 @@ share.to(Apps.QQ)
 }
 ```
 + 支持类型常量
+
+```javascript
+import { SUPPORT } from 'ohu-share'
+
+SUPPORT.LEVEL1 // 0 支持自定义分享和单独唤起APP
+```
+or
+
+```html
+<script>
+  var SUPPORT = ohu.SUPPORT
+  SUPPORT.LEVEL1  // 0 支持自定义分享和单独唤起APP
+</script>
+```
+各个支持等级的解释
 
 ```javascript
 {
@@ -174,6 +287,10 @@ share.to(Apps.QQ)
   LEVEL7: 6
 }
 ```
+## TODO
++ 使用async/await api
++ 定制分享策略
++ vue组件
 
 ## 一些你需要了解的坑
 
