@@ -32,21 +32,23 @@
           'webo': Apps.WEIBO
         }
       })
-      share.setShareData(function (shareData) {
-        return fetch('./wechat.json')
-        .then((data) => {
-          return Promise.resolve({
-            then: function (resolve, reject) {
-              setTimeout(() => {
-                resolve(data.json())
-              }, 2000)
-            }
+      if (share.context.browserName === 'wechat') {
+        share.setShareData(function (shareData) {
+          return fetch('./wechat.json')
+          .then((data) => {
+            return Promise.resolve({
+              then: function (resolve, reject) {
+                setTimeout(() => {
+                  resolve(data.json())
+                }, 2000)
+              }
+            })
+          })
+          .then((data) => {
+            shareData.wechat = data
           })
         })
-        .then((data) => {
-          shareData.wechat = data
-        })
-      })
+      }
       share.setAppMap('wechatFriend',  Apps.MOMENTS)
       share.setSupport(function (supportType) {
         // 自定义有问题也做降级处理

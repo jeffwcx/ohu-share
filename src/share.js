@@ -20,9 +20,10 @@ export default class Share {
     this.strategy = new Strategy(this.context)
 
     this.nativeInstance = null
-    this.isGetNative = false
+    this.instanceConfigReset = false
 
     this.promise = Promise.resolve()
+    this.nativeInstance = this.strategy.exec(Strategy.NATIVE) // only native method can be preset
   }
   _setDataset (originDataset) {
     this._originDataset = originDataset
@@ -49,11 +50,20 @@ export default class Share {
    * })
    */
   setShareData (func) {
-    this.isGetNative = false // if change share data, native instance should reset
     const execResult = func(this.context.shareData)
     let result = execResult
     if (!isPromise(execResult)) {
       result = Promise.resolve().then(() => execResult)
+    }
+    if (this.nativeInstance) {
+      result = result.then(() => {
+        return this.nativeInstance
+      }).then((result) => {
+        if (result) {
+          return result.instance.resetConfig()
+        }
+        return false
+      }).catch(err => this.error && this.error(err))
     }
     this._setTask(result)
     return this
@@ -171,26 +181,27 @@ export default class Share {
    */
   to (app) {
     let finalInstance = null
-    if (!this.isGetNative) {
-      this.nativeInstance = this.strategy.exec(Strategy.NATIVE) // only native method can be preset
-      this.isGetNative = true
-    }
     if (this.nativeInstance) {
       this._setTask(this.nativeInstance)
     }
-    return this.promise.then((result) => {
-      let instance, isSupport
+    return this.promise.then(result => {
       if (result) {
-        instance = result.instance
-        isSupport = result.isSupport
+        const isSupport = result.isSupport
+        const instance = result.instance
+        if (!instance || !isSupport) {
+          return null
+        }
+        finalInstance = instance
+        return {
+          instance: result.instance,
+          isSupport: result.isSupport
+        }
       }
-      if (!instance ||
-        (instance && !isSupport) ||
-        (instance && !instance.isSupport(app))) {
+      return null
+    }).then((result) => {
+      if (!result || (result && result.instance && !result.instance.isSupport(app))) {
         const otherInstance = this.strategy.execByApp(app) // url and scheme
         if (otherInstance) finalInstance = otherInstance
-      } else {
-        finalInstance = instance
       }
       let supportType = finalInstance
         ? (finalInstance.invoke(app), finalInstance.supportType)

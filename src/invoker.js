@@ -9,6 +9,7 @@ export default class Invoker {
     this.supportType = SUPPORT.LEVEL7
     this.finallyInvoke = function () {}
   }
+  resetConfig () {}
   /**
    * when you invoke native method
    * you may need to load JSBridge
