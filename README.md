@@ -47,7 +47,7 @@ import { Share } from 'ohu-share'
 ```
 or
 ```html
-<script src="https://unpkg.com/ohu-share@1.0.1/dist/ohu-share.min.js"></script>
+<script src="https://unpkg.com/ohu-share/dist/ohu-share.min.js"></script>
 <script>
   var share = new ohu.Share()
 </script>
