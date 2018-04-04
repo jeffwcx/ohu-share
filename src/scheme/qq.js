@@ -1,6 +1,6 @@
 
 import Invoker from '../invoker'
-import { OS, SUPPORT } from '../constants'
+import { OS, SUPPORT, Browsers } from '../constants'
 import { getQQOrQzoneQueryData, concatURL, isSupportScheme } from '../utils'
 
 export default class QQ extends Invoker {
@@ -16,6 +16,14 @@ export default class QQ extends Invoker {
         'version': 1,
         'file_type': 'news'
       }
+    },
+    [OS.ANDROID]: {
+      scheme: 'mqqapi://share/to_fri',
+      query: {
+        'src_type': 'isqqBrowser',
+        'version': 1,
+        'file_type': 'news'
+      }
     }
   }
   preset () {
@@ -23,6 +31,10 @@ export default class QQ extends Invoker {
       isSupportScheme(this.context.browserName)) {
       this.strategy = QQ.strategy[this.context.osName]
       if (this.strategy) {
+        if (this.context.osName === OS.ANDROID &&
+          this.context.browserName !== Browsers.QQ) {
+          return false
+        }
         const completeUrl = concatURL(this.strategy.scheme,
           Object.assign({},
             this.strategy.query,
