@@ -1,6 +1,6 @@
 {
   "name": "ohu-share",
-  "version": "1.2.2",
+  "version": "1.2.0",
   "description": "JavaScript share plugin makes you (⊙o⊙)",
   "main": "./src/index.js",
   "scripts": {
