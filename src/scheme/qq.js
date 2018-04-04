@@ -16,14 +16,6 @@ export default class QQ extends Invoker {
         'version': 1,
         'file_type': 'news'
       }
-    },
-    [OS.ANDROID]: {
-      scheme: 'mqqapi://share/to_fri',
-      query: {
-        'src_type': 'isqqBrowser',
-        'version': 1,
-        'file_type': 'news'
-      }
     }
   }
   preset () {

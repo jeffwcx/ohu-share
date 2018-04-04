@@ -1,5 +1,5 @@
 /*!
- * ohu-share v1.1.0
+ * ohu-share v1.2.0
  * author jeffwcx
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -4780,8 +4780,6 @@ Qzone.strategy = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_definePropert
 
 
 
-var _QQ$strategy;
-
 
 
 
@@ -4830,21 +4828,14 @@ var QQ = function (_Invoker) {
   return QQ;
 }(__WEBPACK_IMPORTED_MODULE_7__invoker__["a" /* default */]);
 
-QQ.strategy = (_QQ$strategy = {}, __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_QQ$strategy, __WEBPACK_IMPORTED_MODULE_8__constants__["c" /* OS */].IOS, {
+QQ.strategy = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()({}, __WEBPACK_IMPORTED_MODULE_8__constants__["c" /* OS */].IOS, {
   scheme: 'mqqapi://share/to_fri',
   query: {
     'src_type': 'web',
     'version': 1,
     'file_type': 'news'
   }
-}), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_QQ$strategy, __WEBPACK_IMPORTED_MODULE_8__constants__["c" /* OS */].ANDROID, {
-  scheme: 'mqqapi://share/to_fri',
-  query: {
-    'src_type': 'isqqBrowser',
-    'version': 1,
-    'file_type': 'news'
-  }
-}), _QQ$strategy);
+});
 /* harmony default export */ __webpack_exports__["a"] = (QQ);
 
 /***/ })
